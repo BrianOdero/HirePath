@@ -1,0 +1,68 @@
+# HirePath Supabase config
+# Docs: https://supabase.com/docs/reference/cli/config
+
+project_id = "hire-path"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[analytics]
+enabled = true
+port = 54327
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/**"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+
+# Google provider is configured via the dashboard (or this block once the
+# OAuth web client exists — Phase C), not via an empty placeholder.
+
+# ---- Edge Functions ----
+[functions.generate-questions]
+verify_jwt = true
+
+[functions.feedback]
+verify_jwt = true
+
+[functions.stk-push]
+verify_jwt = true
+
+[functions.stk-query]
+verify_jwt = true
+
+[functions.generate-report]
+verify_jwt = true
+
+[functions.mpesa-callback]
+verify_jwt = false
+# Public: Safaricom calls this URL directly without our bearer token.
+
+[functions.mpesa-renewals]
+verify_jwt = false
+# Scheduled nightly via pg_cron on hosted Supabase:
+schedule = "0 2 * * *"
+
+[edge_runtime]
+policy = "per_worker"
+inspector_port = 8083
+
+[experimental]

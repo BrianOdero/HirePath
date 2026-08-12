@@ -1,0 +1,7 @@
+{
+  "name": "HirePath",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}

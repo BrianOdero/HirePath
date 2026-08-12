@@ -1,0 +1,85 @@
+# HirePath
+
+**AI Interview Coach** — an Ionic + Vue cross-platform app for job seekers
+in Kenya. Paste a job description, get tailored interview questions with
+sample answers, practice, and receive AI coaching feedback on your
+submitted answers. Go Pro with a one-tap **M-Pesa** payment.
+
+---
+
+## Highlights
+
+- **AI question generation** — 3–5 role-specific questions + sample
+  answers, grounded strictly in the pasted job description
+- **AI coaching feedback** — a rating, a critique and a follow-up question
+  for every answer you submit (chat-style thread per question)
+- **Freemium** — 3 free practice sessions per month; Pro unlocks unlimited
+  sessions and feedback
+- **M-Pesa payments** — Safaricom STK Push (Daraja API) with instant
+  activation via callback, a status-query fallback, monthly renewals and a
+  full payment history page
+- **PDF report** — one tap exports your payment history to a PDF
+- **Live UI** — Supabase Realtime pushes chat, payment and subscription
+  changes to the screen instantly
+- **Sign-in options** — email/password (with confirmation & recovery) and
+  Google (native on Android via Capacitor, OAuth redirect on web)
+
+## Stack
+
+Vue 3 (Composition API) · Ionic 8 · Capacitor 8 · Vite 5 · TypeScript ·
+Pinia · TanStack Vue Query · Supabase (Postgres + Auth + Storage +
+Realtime + Edge Functions) · OpenRouter/OpenAI · Safaricom Daraja (M-Pesa)
+
+## Quick start
+
+```bash
+npm install
+cp .env.example .env        # fill in your Supabase project values
+npm run dev                 # http://localhost:5173
+```
+
+The app talks to a hosted Supabase project
+(`vdrdistisykdigqilnpc`). Everything needed to stand up the backend —
+schema, Edge Functions, secrets, cron job, storage bucket — is documented
+in [`docs/backend-setup.md`](docs/backend-setup.md).
+
+## Scripts
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Local dev server |
+| `npm run build` | Typecheck (`vue-tsc`) + production build |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | ESLint |
+| `npm run test:unit` | Unit tests (Vitest) |
+| `npm run test:e2e` | E2E tests (Cypress, seeds its own QA user) |
+
+> Deploy/push helpers: `scripts/backend-setup.sh` automates the Supabase
+> one-time setup (schema, functions, secrets) — see the backend doc.
+
+## Repository layout
+
+```
+src/               Vue app (features: authentication, interview,
+                   subscription, payments, settings)
+supabase/          Migrations, cron script, Edge Functions (AI, M-Pesa, PDF)
+docs/              Setup guides, BRD/PRD/TRD, API references
+tests/             Unit + E2E suites
+```
+
+## Documentation index
+
+| Doc | What it covers |
+|---|---|
+| [`docs/TECHNICAL_README.md`](docs/TECHNICAL_README.md) | How the whole system works end to end, with all configuration |
+| [`docs/backend-setup.md`](docs/backend-setup.md) | Step-by-step Supabase setup and deploy |
+| [`docs/ai-interview-coach-ionic.md`](docs/ai-interview-coach-ionic.md) | Business / product / technical requirements |
+| [`docs/google-signin-setup.md`](docs/google-signin-setup.md) | Google sign-in configuration (Phase C) |
+| [`docs/daraja-api-stk-push-documentation.md`](docs/daraja-api-stk-push-documentation.md) | M-Pesa / Daraja integration reference |
+
+## Status
+
+Live in the Daraja sandbox: payments prompt on registered test numbers
+(KES 1). Switching to production requires the production shortcode,
+consumer key/secret, a real price (`MPESA_PRICE`), and (optional) a
+custom SMTP sender — see the backend setup doc.
