@@ -64,18 +64,33 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  const authStore = useAuthStore();
-  await authStore.ensureSession();
+  console.log('Router navigation to:', to.path);
 
-  if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.user) {
-    return { path: '/login' };
+  try {
+    const authStore = useAuthStore();
+    await authStore.ensureSession();
+
+    if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.user) {
+      console.log('Redirecting to login - no user');
+      return { path: '/login' };
+    }
+
+    if (to.path === '/login' && authStore.user) {
+      console.log('Redirecting to tabs - user already logged in');
+      return { path: '/tabs/tab1' };
+    }
+
+    console.log('Navigation allowed to:', to.path);
+    return true;
+  } catch (error) {
+    console.error('Router guard error:', error);
+    // Allow navigation to continue even if auth check fails
+    // This prevents getting stuck on white screen
+    if (to.path !== '/login') {
+      return { path: '/login' };
+    }
+    return true;
   }
-
-  if (to.path === '/login' && authStore.user) {
-    return { path: '/tabs/tab1' };
-  }
-
-  return true;
 });
 
 export default router
