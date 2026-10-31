@@ -20,6 +20,11 @@ npm-debug.log*
 # Firebase (NEVER commit google-services.json to public repos)
 android/app/google-services.json
 
+# Ruby/Bundler
+vendor/
+.bundle/
+Gemfile.lock
+
 .env
 .env.*
 !.env.example
