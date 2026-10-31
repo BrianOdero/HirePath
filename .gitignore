@@ -21,7 +21,7 @@ npm-debug.log*
 android/app/google-services.json
 
 # Ruby/Bundler
-vendor/
+vendor/bundle/
 .bundle/
 Gemfile.lock
 
