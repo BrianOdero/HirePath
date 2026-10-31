@@ -16,6 +16,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  // Use relative base for Capacitor
+  base: './',
   test: {
     globals: true,
     environment: 'jsdom'
