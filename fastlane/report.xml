@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000225612">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: cd .. &amp;&amp; npm run lint" time="2.644379767">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: cd .. &amp;&amp; npm run test:unit -- --run" time="1.640877329">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: cd .. &amp;&amp; npm run build" time="19.227026546">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

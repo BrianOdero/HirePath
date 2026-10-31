@@ -1,0 +1,35 @@
+default_platform(:android)
+
+platform :android do
+  desc "Run tests"
+  lane :test do
+    sh("cd .. && npm run lint")
+    sh("cd .. && npm run test:unit -- --run")
+    sh("cd .. && npm run build")
+
+    UI.success("✅ All tests passed!")
+  end
+
+  desc "Build debug APK and deploy to Firebase App Distribution"
+  lane :deploy_firebase do
+    # Sync Capacitor
+    sh("cd .. && npx cap sync android")
+
+    # Build debug APK (faster for testing, no signing needed)
+    gradle(
+      task: "assembleDebug",
+      project_dir: "android/"
+    )
+
+    # Deploy to Firebase App Distribution
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      firebase_cli_token: ENV["FIREBASE_TOKEN"],
+      apk_path: "android/app/build/outputs/apk/debug/app-debug.apk",
+      release_notes: "Automatic build from CI/CD pipeline - #{Time.now.strftime('%Y-%m-%d %H:%M')}",
+      groups: "testers"
+    )
+
+    UI.success("🚀 Successfully deployed to Firebase App Distribution!")
+  end
+end

@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 log.txt
 npm-debug.log*
 
+# Firebase (NEVER commit google-services.json to public repos)
+android/app/google-services.json
+
 .env
 .env.*
 !.env.example
