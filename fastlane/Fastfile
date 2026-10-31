@@ -26,7 +26,7 @@ platform :android do
       app: ENV["FIREBASE_APP_ID"],
       firebase_cli_token: ENV["FIREBASE_TOKEN"],
       apk_path: "android/app/build/outputs/apk/debug/app-debug.apk",
-      release_notes: "Automatic build from CI/CD pipeline - #{Time.now.strftime('%Y-%m-%d %H:%M')}",
+      release_notes: ENV["RELEASE_NOTES"] || "Automatic build from CI/CD pipeline - #{Time.now.strftime('%Y-%m-%d %H:%M')}",
       groups: "testers"
     )
 
