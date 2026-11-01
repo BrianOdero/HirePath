@@ -166,8 +166,13 @@ async function onRefresh(event: CustomEvent): Promise<void> {
 }
 
 .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
   text-align: center;
-  padding: 64px 28px 0;
+  padding: 32px;
 }
 
 .empty ion-icon {

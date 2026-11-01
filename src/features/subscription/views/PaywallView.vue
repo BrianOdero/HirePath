@@ -73,6 +73,7 @@ async function openMpesa(): Promise<void> {
 .paywall {
   max-width: 440px;
   margin: 0 auto;
+  padding: 32px 0;
 }
 
 .card {

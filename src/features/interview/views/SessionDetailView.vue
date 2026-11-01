@@ -122,6 +122,7 @@ function feedbackFor(questionId: string): FeedbackMessage[] {
 .detail-loading {
   max-width: 560px;
   margin: 0 auto;
+  padding: 32px 0;
 }
 
 .detail-skeleton {

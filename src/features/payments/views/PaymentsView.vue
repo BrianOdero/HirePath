@@ -14,65 +14,67 @@
         <ion-refresher-content refreshing-text="Refreshing…" pulling-text="Pull to refresh" />
       </ion-refresher>
 
-      <div v-if="isLoading" class="ion-padding-top">
-        <div v-for="n in 4" :key="n" class="row-skeleton">
-          <ion-skeleton-text animated style="width: 85%" />
-          <ion-skeleton-text animated style="width: 45%" />
+      <div class="payments-container">
+        <div v-if="isLoading" class="ion-padding-top">
+          <div v-for="n in 4" :key="n" class="row-skeleton">
+            <ion-skeleton-text animated style="width: 85%" />
+            <ion-skeleton-text animated style="width: 45%" />
+          </div>
         </div>
-      </div>
 
-      <template v-else-if="payments?.length">
-        <section class="summary card">
-          <div class="summary-main">
-            <span class="summary-label">Total paid</span>
-            <span class="summary-total">KES {{ totalPaid }}</span>
-            <span class="summary-count">{{ payments.length }} transaction{{ payments.length === 1 ? '' : 's' }}</span>
-          </div>
-          <div class="summary-stats">
-            <span class="stat stat-paid">{{ counts.paid ?? 0 }} paid</span>
-            <span class="stat stat-pending">{{ counts.pending ?? 0 }} pending</span>
-            <span class="stat stat-failed">{{ counts.failed ?? 0 }} failed</span>
-            <span class="stat">{{ counts.expired ?? 0 }} expired</span>
-          </div>
-          <ion-button expand="block" class="report-btn" :disabled="reporting" @click="downloadReport">
-            <ion-spinner v-if="reporting" name="crescent" />
-            <ion-icon v-else slot="start" :icon="downloadOutline" />
-            {{ reporting ? 'Generating PDF…' : 'Download PDF report' }}
-          </ion-button>
-          <p v-if="reportError" class="report-error">{{ reportError }}</p>
-        </section>
-
-        <ion-list class="payments-list" :inset="false">
-          <ion-item v-for="p in payments" :key="p.id" class="payment-row">
-            <div class="payment-lines">
-              <div class="line-top">
-                <span class="amount">KES {{ p.amount }}</span>
-                <ion-chip :class="['status-chip', `status-${p.status}`]" size="small">
-                  <ion-label>{{ p.status }}</ion-label>
-                </ion-chip>
-              </div>
-              <div class="line-meta">
-                <span>{{ dateLabel(p.created_at) }}</span>
-                <span class="dot">·</span>
-                <span>+{{ p.phone }}</span>
-              </div>
-              <div class="line-ids">
-                <span>Checkout: {{ shortId(p.checkout_request_id) }}</span>
-                <span v-if="p.merchant_request_id">Merchant: {{ shortId(p.merchant_request_id) }}</span>
-              </div>
-              <p v-if="p.status === 'failed' && p.result_desc" class="result-desc">
-                {{ p.result_desc }}
-              </p>
+        <template v-else-if="payments?.length">
+          <section class="summary card">
+            <div class="summary-main">
+              <span class="summary-label">Total paid</span>
+              <span class="summary-total">KES {{ totalPaid }}</span>
+              <span class="summary-count">{{ payments.length }} transaction{{ payments.length === 1 ? '' : 's' }}</span>
             </div>
-          </ion-item>
-        </ion-list>
-      </template>
+            <div class="summary-stats">
+              <span class="stat stat-paid">{{ counts.paid ?? 0 }} paid</span>
+              <span class="stat stat-pending">{{ counts.pending ?? 0 }} pending</span>
+              <span class="stat stat-failed">{{ counts.failed ?? 0 }} failed</span>
+              <span class="stat">{{ counts.expired ?? 0 }} expired</span>
+            </div>
+            <ion-button expand="block" class="report-btn" :disabled="reporting" @click="downloadReport">
+              <ion-spinner v-if="reporting" name="crescent" />
+              <ion-icon v-else slot="start" :icon="downloadOutline" />
+              {{ reporting ? 'Generating PDF…' : 'Download PDF report' }}
+            </ion-button>
+            <p v-if="reportError" class="report-error">{{ reportError }}</p>
+          </section>
 
-      <div v-else class="empty">
-        <ion-icon :icon="receiptOutline" />
-        <h3>No payments yet</h3>
-        <p>Upgrade to HirePath Pro and your M-Pesa transactions will show up here.</p>
-        <ion-button router-link="/tabs/tab3" class="empty-btn">Go to Profile</ion-button>
+          <ion-list class="payments-list" :inset="false">
+            <ion-item v-for="p in payments" :key="p.id" class="payment-row">
+              <div class="payment-lines">
+                <div class="line-top">
+                  <span class="amount">KES {{ p.amount }}</span>
+                  <ion-chip :class="['status-chip', `status-${p.status}`]" size="small">
+                    <ion-label>{{ p.status }}</ion-label>
+                  </ion-chip>
+                </div>
+                <div class="line-meta">
+                  <span>{{ dateLabel(p.created_at) }}</span>
+                  <span class="dot">·</span>
+                  <span>+{{ p.phone }}</span>
+                </div>
+                <div class="line-ids">
+                  <span>Checkout: {{ shortId(p.checkout_request_id) }}</span>
+                  <span v-if="p.merchant_request_id">Merchant: {{ shortId(p.merchant_request_id) }}</span>
+                </div>
+                <p v-if="p.status === 'failed' && p.result_desc" class="result-desc">
+                  {{ p.result_desc }}
+                </p>
+              </div>
+            </ion-item>
+          </ion-list>
+        </template>
+
+        <div v-else class="empty">
+          <ion-icon :icon="receiptOutline" />
+          <h3>No payments yet</h3>
+          <p>Upgrade to HirePath Pro and your M-Pesa transactions will show up here.</p>
+          <ion-button router-link="/tabs/tab3" class="empty-btn">Go to Profile</ion-button>
+        </div>
       </div>
     </ion-content>
 
@@ -175,6 +177,12 @@ async function downloadReport(): Promise<void> {
 </script>
 
 <style scoped>
+.payments-container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
 .card {
   background: var(--ion-card-background);
   border: 1px solid var(--ion-border-color);
@@ -345,8 +353,13 @@ async function downloadReport(): Promise<void> {
 }
 
 .empty {
-  padding: 60px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
   text-align: center;
+  padding: 32px;
 }
 
 .empty ion-icon {

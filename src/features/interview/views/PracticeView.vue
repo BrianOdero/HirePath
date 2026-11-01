@@ -178,7 +178,7 @@ function generate() {
 .practice {
   max-width: 560px;
   margin: 0 auto;
-  padding-top: 12px;
+  padding: 32px 0;
 }
 
 .greeting {
