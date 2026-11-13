@@ -166,9 +166,14 @@ async function confirmSignOut(): Promise<void> {
 
 <style scoped>
 .profile {
-  max-width: 520px;
+  max-width: 600px;
+  min-height: calc(100% - 32px);
   margin: 0 auto;
-  padding: 32px 0;
+  padding: clamp(20px, 3vh, 40px) 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-sizing: border-box;
 }
 
 .card {

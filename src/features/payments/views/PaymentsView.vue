@@ -178,9 +178,11 @@ async function downloadReport(): Promise<void> {
 
 <style scoped>
 .payments-container {
-  max-width: 560px;
+  max-width: 600px;
+  min-height: calc(100% - 32px);
   margin: 0 auto;
-  padding: 32px 0;
+  padding: clamp(20px, 3vh, 40px) 0 32px;
+  box-sizing: border-box;
 }
 
 .card {

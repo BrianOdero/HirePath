@@ -291,8 +291,14 @@ onBeforeUnmount(stopWatching);
 
 <style scoped>
 .mpesa {
-  max-width: 420px;
+  max-width: 440px;
+  min-height: 100%;
   margin: 0 auto;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .amount-card {

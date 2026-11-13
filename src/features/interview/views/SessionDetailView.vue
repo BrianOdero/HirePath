@@ -120,9 +120,9 @@ function feedbackFor(questionId: string): FeedbackMessage[] {
 
 <style scoped>
 .detail-loading {
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 32px 0;
+  padding: clamp(20px, 3vh, 40px) 0 32px;
 }
 
 .detail-skeleton {
@@ -134,7 +134,7 @@ function feedbackFor(questionId: string): FeedbackMessage[] {
 }
 
 .meta {
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto 16px;
   background: var(--ion-card-background);
   border: 1px solid var(--ion-border-color);
@@ -171,7 +171,7 @@ function feedbackFor(questionId: string): FeedbackMessage[] {
 }
 
 ion-accordion-group {
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
 }
 

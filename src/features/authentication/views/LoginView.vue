@@ -60,46 +60,50 @@ onMounted(() => {
 
 <style scoped>
 .login-container {
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 48px 24px 24px;
+  padding: 32px 20px;
   min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: stretch;
+  box-sizing: border-box;
 }
 
 .brand {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .logo {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 16px;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: 24px;
   background: var(--ion-color-primary);
   color: #fff;
+  box-shadow: 0 10px 25px -5px rgba(31, 58, 95, 0.35);
 }
 
 .logo ion-icon {
-  font-size: 1.9rem;
+  font-size: 3rem;
 }
 
 .brand h1 {
   margin: 0 0 8px;
-  font-size: 1.9rem;
+  font-size: 2.1rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ion-text-color);
 }
 
 .brand p {
-  margin: 0;
+  margin: 0 auto;
+  max-width: 340px;
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--ion-color-medium);
@@ -131,8 +135,8 @@ onMounted(() => {
 }
 
 .fine-print {
-  margin-top: auto;
-  padding-top: 28px;
+  margin-top: 24px;
+  padding-top: 0;
   text-align: center;
 }
 

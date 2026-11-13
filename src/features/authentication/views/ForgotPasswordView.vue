@@ -114,13 +114,14 @@ function goToLogin() {
 
 <style scoped>
 .page-container {
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 40px 24px 24px;
+  padding: 32px 20px;
   min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .head {
@@ -134,19 +135,20 @@ function goToLogin() {
 }
 
 .logo {
-  width: 56px;
-  height: 56px;
-  margin: 0 0 16px;
+  width: 80px;
+  height: 80px;
+  margin: 0 0 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: 20px;
   background: var(--ion-color-primary);
   color: #fff;
+  box-shadow: 0 8px 20px -4px rgba(31, 58, 95, 0.3);
 }
 
 .logo ion-icon {
-  font-size: 1.7rem;
+  font-size: 2.4rem;
 }
 
 .head h1 {

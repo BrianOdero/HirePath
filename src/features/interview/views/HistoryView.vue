@@ -11,41 +11,43 @@
         <ion-refresher-content refreshing-text="Refreshing…" pulling-text="Pull to refresh" />
       </ion-refresher>
 
-      <div v-if="isLoading" class="ion-padding">
-        <div v-for="n in 4" :key="n" class="row-skeleton">
-          <ion-skeleton-text animated style="width: 85%" />
-          <ion-skeleton-text animated style="width: 45%" />
+      <div class="history-container">
+        <div v-if="isLoading">
+          <div v-for="n in 4" :key="n" class="row-skeleton">
+            <ion-skeleton-text animated style="width: 85%" />
+            <ion-skeleton-text animated style="width: 45%" />
+          </div>
         </div>
-      </div>
 
-      <div v-else-if="!sessions?.length" class="empty">
-        <ion-icon :icon="documentsOutline" />
-        <h3>No practice sessions yet</h3>
-        <p>Paste your first job description to unlock tailored questions.</p>
-        <ion-button router-link="/tabs/tab1" class="empty-btn">Start practising</ion-button>
-      </div>
+        <div v-else-if="!sessions?.length" class="empty">
+          <ion-icon :icon="documentsOutline" />
+          <h3>No practice sessions yet</h3>
+          <p>Paste your first job description to unlock tailored questions.</p>
+          <ion-button router-link="/tabs/tab1" class="empty-btn">Start practising</ion-button>
+        </div>
 
-      <ion-list v-else class="ion-padding-top" :inset="false">
-        <template v-for="group in groups" :key="group.label">
-          <ion-list-header>{{ group.label }}</ion-list-header>
-          <ion-item-sliding v-for="session in group.items" :key="session.id">
-            <ion-item button @click="openSession(session.id)">
-              <ion-icon slot="start" :icon="documentTextOutline" class="row-icon" />
-              <ion-label>
-                <h2>{{ session.role }}</h2>
-                <p>{{ summary(session) }}</p>
-              </ion-label>
-              <span class="row-time">{{ timeLabel(session.createdAt) }}</span>
-              <ion-icon slot="end" :icon="chevronForward" class="chevron" />
-            </ion-item>
-            <ion-item-options side="end">
-              <ion-item-option color="danger" expandable @click="remove(session.id)">
-                <ion-icon slot="icon-only" :icon="trashOutline" />
-              </ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
-        </template>
-      </ion-list>
+        <ion-list v-else :inset="false">
+          <template v-for="group in groups" :key="group.label">
+            <ion-list-header>{{ group.label }}</ion-list-header>
+            <ion-item-sliding v-for="session in group.items" :key="session.id">
+              <ion-item button @click="openSession(session.id)">
+                <ion-icon slot="start" :icon="documentTextOutline" class="row-icon" />
+                <ion-label>
+                  <h2>{{ session.role }}</h2>
+                  <p>{{ summary(session) }}</p>
+                </ion-label>
+                <span class="row-time">{{ timeLabel(session.createdAt) }}</span>
+                <ion-icon slot="end" :icon="chevronForward" class="chevron" />
+              </ion-item>
+              <ion-item-options side="end">
+                <ion-item-option color="danger" expandable @click="remove(session.id)">
+                  <ion-icon slot="icon-only" :icon="trashOutline" />
+                </ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+          </template>
+        </ion-list>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -143,6 +145,14 @@ async function onRefresh(event: CustomEvent): Promise<void> {
 </script>
 
 <style scoped>
+.history-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vh, 32px) 16px 32px;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
 .row-icon {
   color: var(--ion-color-secondary);
 }

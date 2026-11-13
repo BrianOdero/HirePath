@@ -176,9 +176,14 @@ function generate() {
 
 <style scoped>
 .practice {
-  max-width: 560px;
+  max-width: 600px;
+  min-height: calc(100% - 32px);
   margin: 0 auto;
-  padding: 32px 0;
+  padding: clamp(20px, 4vh, 48px) 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
 }
 
 .greeting {
