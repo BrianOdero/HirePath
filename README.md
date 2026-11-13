@@ -15,7 +15,7 @@
 
 You can test and explore the complete application flow inside an interactive mobile simulator **before cloning or installing the codebase**:
 
-👉 **[Open Interactive Mobile Preview (preview.html)](preview.html)**
+👉 **[Open Interactive Mobile Preview](https://brianodero.github.io/HirePath/preview.html)** — runs live in your browser, nothing to download.
 
 > **How to open:**
 > Simply double-click [`preview.html`](preview.html) in your file manager or open it in any web browser (`google-chrome preview.html` or `firefox preview.html`).
