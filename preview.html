@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HirePath — Interactive Mobile App Preview</title>
+  <style>
+    :root {
+      --primary: #1f3a5f;
+      --primary-rgb: 31, 58, 95;
+      --primary-hover: #162b47;
+      --secondary: #a97c1b;
+      --secondary-rgb: 169, 124, 27;
+      --success: #1dad5f;
+      --danger: #b3372e;
+      --warning: #b26a00;
+      
+      /* Light theme */
+      --bg-page: #f4f6f9;
+      --bg-card: #ffffff;
+      --bg-input: #f8fafc;
+      --text-main: #1c2430;
+      --text-sub: #64748b;
+      --border-color: #e2e8f0;
+      --tab-bg: rgba(255, 255, 255, 0.94);
+      --header-bg: rgba(255, 255, 255, 0.9);
+      --shadow-sm: 0 1px 3px rgba(28, 36, 48, 0.06);
+      --shadow-md: 0 4px 12px rgba(28, 36, 48, 0.08);
+      --phone-case: #1f2937;
+      --phone-rim: #374151;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #0d131a;
+      --bg-card: #151d26;
+      --bg-input: #1a2430;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --border-color: #273544;
+      --tab-bg: rgba(21, 29, 38, 0.94);
+      --header-bg: rgba(21, 29, 38, 0.9);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: #0b0f17;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(31, 58, 95, 0.35) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(169, 124, 27, 0.2) 0%, transparent 40%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px 16px 48px;
+    }
+
+    /* Top bar banner */
+    .preview-header {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(31, 58, 95, 0.5);
+    }
+
+    .brand-title h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .brand-title span {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      border-color: #3b82f6;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+    }
+
+    .nav-btn.special {
+      background: linear-gradient(135deg, #a97c1b, #d97706);
+      border: none;
+      color: #fff;
+    }
+
+    /* Layout: Phone + Side Guide */
+    .preview-stage {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 40px;
+      width: 100%;
+      max-width: 1100px;
+      flex-wrap: wrap;
+    }
+
+    /* Smartphone Frame */
+    .phone-wrapper {
+      position: relative;
+      width: 390px;
+      height: 800px;
+      background: var(--phone-case);
+      border-radius: 54px;
+      padding: 12px;
+      box-shadow: 
+        0 25px 60px -15px rgba(0, 0, 0, 0.85),
+        0 0 0 4px var(--phone-rim),
+        inset 0 0 8px rgba(255, 255, 255, 0.15);
+      flex-shrink: 0;
+    }
+
+    /* Dynamic Island */
+    .phone-notch {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 26px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .notch-camera {
+      width: 10px;
+      height: 10px;
+      background: #0f172a;
+      border-radius: 50%;
+      border: 1px solid #1e293b;
+    }
+
+    .notch-sensor {
+      width: 7px;
+      height: 7px;
+      background: #090d16;
+      border-radius: 50%;
+    }
+
+    /* Screen display */
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-page);
+      border-radius: 44px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+    }
+
+    /* Status Bar */
+    .status-bar {
+      height: 44px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      z-index: 90;
+      flex-shrink: 0;
+      background: transparent;
+    }
+
+    .status-time {
+      margin-left: 6px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    /* Screen Container */
+    .screen-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      scroll-behavior: smooth;
+    }
+
+    .screen-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Views */
+    .view-screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 16px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .view-screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Card */
+    .ui-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Common Button */
+    .btn {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: #fff;
+    }
+
+    .btn-mpesa {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    /* Inputs */
+    .field-group {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    [data-theme="dark"] .field-label {
+      color: #93c5fd;
+    }
+
+    .text-input {
+      width: 100%;
+      height: 46px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0 14px;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .text-input:focus {
+      border-color: var(--primary);
+    }
+
+    textarea.text-input {
+      height: 130px;
+      padding: 12px 14px;
+      resize: none;
+      line-height: 1.4;
+    }
+
+    /* Tab Bar */
+    .tab-bar {
+      height: 60px;
+      background: var(--tab-bg);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 8px 6px;
+      flex-shrink: 0;
+      z-index: 80;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text-sub);
+      font-size: 0.72rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color 0.15s;
+    }
+
+    .tab-item svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .tab-item.active {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    [data-theme="dark"] .tab-item.active {
+      color: #60a5fa;
+    }
+
+    /* Home indicator */
+    .home-indicator {
+      width: 125px;
+      height: 4px;
+      background: var(--text-main);
+      opacity: 0.3;
+      border-radius: 999px;
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 120;
+      pointer-events: none;
+    }
+
+    /* --- AUTH VIEW SPECIFICS --- */
+    .auth-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      padding: 20px 8px;
+      min-height: 100%;
+    }
+
+    .brand-hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .hero-logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 24px;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 10px 25px -5px rgba(31, 58, 95, 0.4);
+      font-size: 44px;
+    }
+
+    .brand-hero h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .brand-hero p {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      line-height: 1.4;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .auth-toggle {
+      display: flex;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 14px;
+    }
+
+    .auth-toggle-btn {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    .auth-toggle-btn.active {
+      background: var(--bg-card);
+      color: var(--text-main);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0;
+      color: var(--text-sub);
+      font-size: 0.76rem;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    .google-btn {
+      width: 100%;
+      height: 46px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .auth-fineprint {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    /* --- PRACTICE VIEW --- */
+    .greeting-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .greeting-sub {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+    }
+
+    .greeting-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pill-free {
+      background: rgba(100, 116, 139, 0.15);
+      color: var(--text-sub);
+    }
+
+    .pill-pro {
+      background: var(--secondary);
+      color: #fff;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--border-color);
+      border-radius: 999px;
+      margin: 10px 0 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width 0.3s;
+    }
+
+    /* --- HISTORY VIEW --- */
+    .history-group-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin: 10px 0 8px 4px;
+    }
+
+    .session-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .session-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .session-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(169, 124, 27, 0.15);
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .session-info {
+      flex: 1;
+      text-align: left;
+    }
+
+    .session-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .session-sub {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+    }
+
+    .session-time {
+      font-size: 0.72rem;
+      color: var(--text-sub);
+    }
+
+    /* --- SESSION DETAIL / AI COACH CHAT --- */
+    .accordion {
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      background: var(--bg-card);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .accordion-body {
+      padding: 14px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-input);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .ai-chat-thread {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .chat-bubble {
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .chat-ai {
+      background: rgba(31, 58, 95, 0.08);
+      border: 1px solid rgba(31, 58, 95, 0.2);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] .chat-ai {
+      background: rgba(96, 165, 250, 0.1);
+      border-color: rgba(96, 165, 250, 0.2);
+    }
+
+    .score-badge {
+      display: inline-flex;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-weight: 700;
+      font-size: 0.75rem;
+      margin-bottom: 6px;
+    }
+
+    /* --- PROFILE & SETTINGS --- */
+    .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .profile-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .theme-segmented {
+      display: flex;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 3px;
+      margin-top: 10px;
+    }
+
+    .theme-seg-btn {
+      flex: 1;
+      padding: 6px 0;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    .theme-seg-btn.active {
+      background: var(--bg-card);
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* --- MODALS OVERLAY --- */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 150;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      background: var(--bg-card);
+      border-radius: 28px 28px 0 0;
+      padding: 24px 20px 32px;
+      box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.25s ease-out;
+      max-height: 90%;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-close {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-sub);
+    }
+
+    /* Simulated STK Push Toast */
+    .stk-push-prompt {
+      position: absolute;
+      top: 55px;
+      left: 12px;
+      right: 12px;
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 16px;
+      padding: 16px;
+      color: #fff;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+      z-index: 200;
+      display: none;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .stk-push-prompt.active {
+      display: block;
+    }
+
+    /* Right Side Info Panel */
+    .guide-panel {
+      flex: 1;
+      min-width: 320px;
+      max-width: 520px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .guide-panel h2 {
+      font-size: 1.25rem;
+      margin-bottom: 14px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guide-step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h3 {
+      font-size: 0.95rem;
+      color: #f8fafc;
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    .code-tag {
+      background: rgba(0,0,0,0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #38bdf8;
+      font-size: 0.78rem;
+    }
+
+    .doc-link-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+
+    .doc-link-card:hover {
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- Header & Screen Navigation Toolbar -->
+  <header class="preview-header">
+    <div class="brand-title">
+      <div class="brand-badge">💼</div>
+      <div>
+        <h1>HirePath Mobile Simulator</h1>
+        <span>Live Interactive Architecture & Flow Preview</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="nav-btn" onclick="showScreen('screen-login')">1. Login</button>
+      <button class="nav-btn active" onclick="showScreen('screen-practice')">2. Practice</button>
+      <button class="nav-btn" onclick="showScreen('screen-history')">3. History</button>
+      <button class="nav-btn" onclick="showScreen('screen-detail')">4. AI Coaching</button>
+      <button class="nav-btn" onclick="showScreen('screen-profile')">5. Profile</button>
+      <button class="nav-btn special" onclick="openModal('modal-paywall')">⚡ Paywall</button>
+      <button class="nav-btn" onclick="toggleTheme()" id="themeBtn">🌙 Dark Mode</button>
+    </div>
+  </header>
+
+  <div class="preview-stage">
+    
+    <!-- Phone Device Shell -->
+    <div class="phone-wrapper">
+      <div class="phone-notch">
+        <div class="notch-sensor"></div>
+        <div class="notch-camera"></div>
+      </div>
+
+      <div class="phone-screen">
+        <!-- Top Status Bar -->
+        <div class="status-bar">
+          <span class="status-time" id="clock">09:41</span>
+          <div class="status-icons">
+            <span>5G</span>
+            <span>📶</span>
+            <span>100% 🔋</span>
+          </div>
+        </div>
+
+        <!-- Scrollable Screen Outlet -->
+        <div class="screen-container">
+
+          <!-- 1. AUTH / LOGIN SCREEN -->
+          <div id="screen-login" class="view-screen">
+            <div class="auth-container">
+              <header class="brand-hero">
+                <div class="hero-logo">💼</div>
+                <h1>HirePath</h1>
+                <p>Practice with tailored interview questions. Get feedback. Land the job.</p>
+              </header>
+
+              <div class="ui-card">
+                <div class="auth-toggle">
+                  <button class="auth-toggle-btn active" id="btn-tab-signin" onclick="setAuthTab('signin')">Sign in</button>
+                  <button class="auth-toggle-btn" id="btn-tab-signup" onclick="setAuthTab('signup')">Create account</button>
+                </div>
+
+                <div id="field-fullname" class="field-group" style="display: none;">
+                  <label class="field-label">Full name</label>
+                  <input type="text" class="text-input" placeholder="e.g. Wanjiku Kamau" value="Wanjiku Kamau">
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label">Email</label>
+                  <input type="email" class="text-input" placeholder="you@example.com" value="wanjiku@example.com">
+                </div>
+
+                <div class="field-group">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <label class="field-label" style="margin-bottom:0;">Password</label>
+                    <a href="javascript:void(0)" onclick="showScreen('screen-forgot')" style="font-size:0.75rem; color:var(--primary); text-decoration:none;">Forgot?</a>
+                  </div>
+                  <input type="password" class="text-input" value="••••••••••••">
+                </div>
+
+                <button class="btn btn-primary" onclick="simulateLogin()">
+                  <span id="login-btn-text">Sign in</span>
+                </button>
+
+                <div class="divider">or continue with</div>
+
+                <button class="google-btn" onclick="simulateLogin()">
+                  <svg width="18" height="18" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15A11 11 0 0 0 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                  </svg>
+                  Continue with Google
+                </button>
+              </div>
+
+              <footer class="auth-fineprint">
+                By continuing, you agree to HirePath's Terms of Service and Privacy Policy.
+              </footer>
+            </div>
+          </div>
+
+          <!-- 1B. FORGOT PASSWORD -->
+          <div id="screen-forgot" class="view-screen">
+            <button onclick="showScreen('screen-login')" style="background:none; border:none; color:var(--primary); font-size:0.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; margin-bottom:16px;">
+              ← Back to sign in
+            </button>
+            <div class="auth-container">
+              <div style="width:72px; height:72px; border-radius:20px; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:32px; margin-bottom:16px;">
+                🔑
+              </div>
+              <h1 style="font-size:1.5rem; margin-bottom:6px; color:var(--text-main);">Reset password</h1>
+              <p style="font-size:0.85rem; color:var(--text-sub); margin-bottom:20px;">Enter your email to receive a secure recovery link.</p>
+
+              <div class="ui-card">
+                <div class="field-group">
+                  <label class="field-label">Email address</label>
+                  <input type="email" class="text-input" value="wanjiku@example.com">
+                </div>
+                <button class="btn btn-primary" onclick="alert('Password reset instructions dispatched to inbox!'); showScreen('screen-login');">
+                  Send reset link
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. PRACTICE SCREEN (TAB 1) -->
+          <div id="screen-practice" class="view-screen active">
+            <div class="greeting-head">
+              <div>
+                <p class="greeting-sub">Friday, November 13</p>
+                <h1 class="greeting-title">Good morning, Wanjiku</h1>
+              </div>
+              <span class="pill pill-free" id="practice-plan-pill">Free</span>
+            </div>
+
+            <!-- Usage Limit Card -->
+            <div class="ui-card">
+              <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:600; color:var(--text-main);">
+                <span id="usage-text">1 of 3 free sessions used</span>
+                <span id="usage-left" style="color:var(--secondary);">2 left</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="usage-bar" style="width: 33%;"></div>
+              </div>
+              <p style="font-size:0.75rem; color:var(--text-sub); margin-top:6px;">
+                Resets on the 1st of each month. <a href="javascript:void(0)" onclick="openModal('modal-paywall')" style="color:var(--secondary); font-weight:600;">Upgrade to Pro</a> for unlimited prep.
+              </p>
+            </div>
+
+            <!-- New Session Generator -->
+            <div class="ui-card">
+              <h2 style="font-size:1.05rem; margin-bottom:4px; color:var(--text-main);">New practice session</h2>
+              <p style="font-size:0.82rem; color:var(--text-sub); margin-bottom:12px;">Paste the job description you want to prep for.</p>
+              
+              <textarea id="jd-input" class="text-input" placeholder="Paste JD here...">Senior Frontend Engineer at Safaricom PLC
+Requirements:
+- 4+ years Vue.js, TypeScript, and Ionic/Capacitor experience.
+- Deep expertise in responsive state management (Pinia) and realtime WebSockets.
+- Experience building scalable M-Pesa FinTech mobile integrations.</textarea>
+              
+              <div style="display:flex; justify-content:space-between; margin:8px 2px 14px; font-size:0.75rem; color:var(--text-sub);">
+                <span>Grounds AI questions on exact JD</span>
+                <span id="char-count">245 / 6,000</span>
+              </div>
+
+              <button class="btn btn-primary" onclick="simulateGenerate()">
+                <span>⚡ Generate interview questions</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. HISTORY SCREEN (TAB 2) -->
+          <div id="screen-history" class="view-screen">
+            <h1 style="font-size:1.35rem; font-weight:700; margin-bottom:12px; color:var(--text-main);">History</h1>
+
+            <div class="history-group-title">Today</div>
+            <div class="session-item" onclick="showScreen('screen-detail')">
+              <div class="session-icon">📱</div>
+              <div class="session-info">
+                <div class="session-title">Senior Frontend Engineer</div>
+                <div class="session-sub">Safaricom PLC · 4 questions</div>
+              </div>
+              <span class="session-time">10:14 AM ›</span>
+            </div>
+
+            <div class="history-group-title">Yesterday</div>
+            <div class="session-item" onclick="showScreen('screen-detail')">
+              <div class="session-icon">💳</div>
+              <div class="session-info">
+                <div class="session-title">Fintech Product Manager</div>
+                <div class="session-sub">Equity Bank · 5 questions</div>
+              </div>
+              <span class="session-time">Yesterday ›</span>
+            </div>
+
+            <div class="history-group-title">Earlier</div>
+            <div class="session-item" onclick="showScreen('screen-detail')">
+              <div class="session-icon">☁️</div>
+              <div class="session-info">
+                <div class="session-title">Fullstack Cloud Architect</div>
+                <div class="session-sub">KCB Group · 3 questions</div>
+              </div>
+              <span class="session-time">Nov 4 ›</span>
+            </div>
+          </div>
+
+          <!-- 4. SESSION DETAIL / AI COACH CHAT -->
+          <div id="screen-detail" class="view-screen">
+            <button onclick="showScreen('screen-history')" style="background:none; border:none; color:var(--primary); font-size:0.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; margin-bottom:12px;">
+              ← Back to history
+            </button>
+
+            <div class="ui-card" style="margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h1 style="font-size:1.15rem; color:var(--text-main);">Senior Frontend Engineer</h1>
+                <span class="pill pill-pro">Pro</span>
+              </div>
+              <p style="font-size:0.8rem; color:var(--text-sub); margin-top:4px;">
+                Safaricom PLC · 4 questions · Created today
+              </p>
+            </div>
+
+            <!-- Accordion Question 1 -->
+            <div class="accordion">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>1. Optimizing Vue / Ionic Mobile Performance</span>
+                <span>▾</span>
+              </div>
+              <div class="accordion-body">
+                <p style="color:var(--text-sub); font-style:italic; margin-bottom:10px;">
+                  "How would you address DOM thrashing and layout thrash during continuous infinite scrolling in an Ionic application?"
+                </p>
+                <div style="background:var(--bg-card); padding:10px; border-radius:8px; border:1px solid var(--border-color); font-size:0.82rem; margin-bottom:10px;">
+                  <strong>Your Submitted Answer:</strong><br>
+                  I utilize virtual scrolling (<code class="code-tag">ion-virtual-scroll</code>) combined with shallow ref bindings in Vue 3 to bypass deep reactivity overhead.
+                </div>
+
+                <!-- AI Coaching Feedback -->
+                <div class="ai-chat-thread">
+                  <div class="score-badge">🎯 Score: 8.5 / 10 — High Relevance</div>
+                  <div class="chat-bubble chat-ai">
+                    <strong>AI Coach:</strong> Excellent strategy focusing on virtualized DOM nodes. To make this answer exceptional for Safaricom, highlight how you handle image caching and memory pressure on lower-end Android devices.
+                  </div>
+                  <div class="chat-bubble chat-ai" style="border-left: 3px solid var(--secondary);">
+                    <strong>Follow-up Question:</strong> How would you prevent state desynchronization if the network drops while the user is mid-scroll?
+                  </div>
+
+                  <div style="display:flex; gap:6px; margin-top:8px;">
+                    <input type="text" class="text-input" placeholder="Reply to AI Coach..." style="height:38px; font-size:0.8rem;">
+                    <button class="btn btn-primary" style="min-height:38px; width:64px; font-size:0.8rem;" onclick="alert('Answer submitted! AI Coach is analyzing...')">Send</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordion Question 2 -->
+            <div class="accordion">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>2. M-Pesa STK Push Architecture</span>
+                <span>▾</span>
+              </div>
+              <div class="accordion-body" style="display:none;">
+                <p style="color:var(--text-sub); font-style:italic; margin-bottom:10px;">
+                  "Walk me through how you handle Daraja STK Push callback failures and user verification."
+                </p>
+                <button class="btn btn-secondary" style="min-height:38px; font-size:0.82rem;">Record / Type Answer</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. PROFILE & SETTINGS (TAB 3) -->
+          <div id="screen-profile" class="view-screen">
+            <h1 style="font-size:1.35rem; font-weight:700; margin-bottom:14px; color:var(--text-main);">Profile</h1>
+
+            <div class="ui-card">
+              <div class="profile-head">
+                <div class="profile-avatar">WK</div>
+                <div>
+                  <h2 style="font-size:1.1rem; color:var(--text-main);">Wanjiku Kamau</h2>
+                  <p style="font-size:0.82rem; color:var(--text-sub);">wanjiku@example.com</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Plan Card -->
+            <div class="ui-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-weight:700; color:var(--text-main);" id="profile-tier-text">Free Plan</span>
+                <span style="font-size:0.75rem; color:var(--text-sub);">Resets in 17 days</span>
+              </div>
+              <p style="font-size:0.84rem; color:var(--text-sub); margin-bottom:14px;">
+                3 free sessions per month with core questions.
+              </p>
+              <button class="btn btn-secondary" onclick="openModal('modal-paywall')">
+                Upgrade to Pro — KES 1/mo
+              </button>
+            </div>
+
+            <!-- Payments History Row -->
+            <div class="ui-card" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="showScreen('screen-payments')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:20px;">🧾</span>
+                <div>
+                  <div style="font-weight:600; font-size:0.9rem; color:var(--text-main);">Payments & Statements</div>
+                  <div style="font-size:0.75rem; color:var(--text-sub);">Track M-Pesa receipts & download PDF</div>
+                </div>
+              </div>
+              <span style="color:var(--text-sub);">›</span>
+            </div>
+
+            <!-- Appearance Settings -->
+            <div class="ui-card">
+              <div style="font-weight:600; font-size:0.9rem; color:var(--text-main); margin-bottom:4px;">Appearance</div>
+              <div class="theme-segmented">
+                <button class="theme-seg-btn active" id="thm-light" onclick="setAppTheme('light')">Light</button>
+                <button class="theme-seg-btn" id="thm-dark" onclick="setAppTheme('dark')">Dark</button>
+                <button class="theme-seg-btn" id="thm-system" onclick="setAppTheme('system')">System</button>
+              </div>
+            </div>
+
+            <button class="btn btn-outline" style="color:var(--danger); border-color:rgba(179, 55, 46, 0.3); margin-top:6px;" onclick="showScreen('screen-login')">
+              Sign out
+            </button>
+            <p style="text-align:center; font-size:0.75rem; color:var(--text-sub); margin-top:14px;">
+              HirePath v0.1 · Terms · Privacy
+            </p>
+          </div>
+
+          <!-- 6. PAYMENTS LIST SCREEN -->
+          <div id="screen-payments" class="view-screen">
+            <button onclick="showScreen('screen-profile')" style="background:none; border:none; color:var(--primary); font-size:0.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; margin-bottom:12px;">
+              ← Back to profile
+            </button>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h1 style="font-size:1.25rem; font-weight:700; color:var(--text-main);">Payments</h1>
+              <button class="btn btn-outline" style="min-height:32px; width:auto; padding:0 10px; font-size:0.75rem;" onclick="alert('Exporting statement: PDF downloaded to local storage!')">
+                📄 PDF Export
+              </button>
+            </div>
+
+            <div class="ui-card" style="padding:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-size:0.75rem; color:var(--text-sub);">Total M-Pesa Spent</div>
+                  <div style="font-size:1.15rem; font-weight:700; color:var(--text-main);">KES 2.00</div>
+                </div>
+                <span class="pill pill-pro">Pro Active</span>
+              </div>
+            </div>
+
+            <div class="session-item" style="cursor:default;">
+              <div class="session-icon" style="background:#dcfce7; color:#15803d;">✓</div>
+              <div class="session-info">
+                <div class="session-title">HirePath Pro — Monthly</div>
+                <div class="session-sub">M-Pesa Ref: QBC89324KD · Nov 1</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:700; font-size:0.85rem; color:var(--text-main);">KES 1.00</div>
+                <span style="font-size:0.68rem; color:#15803d; font-weight:600;">Paid</span>
+              </div>
+            </div>
+
+            <div class="session-item" style="cursor:default;">
+              <div class="session-icon" style="background:#dcfce7; color:#15803d;">✓</div>
+              <div class="session-info">
+                <div class="session-title">HirePath Pro — Monthly</div>
+                <div class="session-sub">M-Pesa Ref: PLM38291ZZ · Oct 1</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:700; font-size:0.85rem; color:var(--text-main);">KES 1.00</div>
+                <span style="font-size:0.68rem; color:#15803d; font-weight:600;">Paid</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Tab Navigation Bar (Visible in Main App) -->
+        <nav class="tab-bar" id="app-tab-bar">
+          <div class="tab-item active" id="tab-btn-practice" onclick="showScreen('screen-practice')">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span>Practice</span>
+          </div>
+          <div class="tab-item" id="tab-btn-history" onclick="showScreen('screen-history')">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>History</span>
+          </div>
+          <div class="tab-item" id="tab-btn-profile" onclick="showScreen('screen-profile')">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile</span>
+          </div>
+        </nav>
+
+        <!-- Home Bar -->
+        <div class="home-indicator"></div>
+
+        <!-- ================= MODALS ================= -->
+
+        <!-- A. PAYWALL MODAL -->
+        <div id="modal-paywall" class="modal-overlay" onclick="closeModal('modal-paywall')">
+          <div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-top">
+              <span style="font-weight:700; font-size:1.1rem; color:var(--text-main);">HirePath Pro</span>
+              <button class="modal-close" onclick="closeModal('modal-paywall')">✕</button>
+            </div>
+
+            <div style="text-align:center; padding:10px 0 16px;">
+              <div style="font-size:2rem; font-weight:800; color:var(--text-main);">KES 1 <span style="font-size:0.9rem; font-weight:500; color:var(--text-sub);">/ month</span></div>
+              <p style="font-size:0.84rem; color:var(--text-sub); margin-top:4px;">Unlimited AI practice. Cancel anytime.</p>
+            </div>
+
+            <div style="margin-bottom:20px; font-size:0.86rem; color:var(--text-main);">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                <span style="color:var(--success); font-weight:bold;">✓</span> Unlimited practice sessions
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                <span style="color:var(--success); font-weight:bold;">✓</span> Realtime AI coaching feedback
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                <span style="color:var(--success); font-weight:bold;">✓</span> Deep follow-up interview questions
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="color:var(--success); font-weight:bold;">✓</span> Full session transcripts & PDF exports
+              </div>
+            </div>
+
+            <button class="btn btn-mpesa" onclick="closeModal('modal-paywall'); openModal('modal-mpesa');">
+              <span>💳 Pay with M-Pesa</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- B. MPESA MODAL -->
+        <div id="modal-mpesa" class="modal-overlay" onclick="closeModal('modal-mpesa')">
+          <div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-top">
+              <span style="font-weight:700; font-size:1.1rem; color:var(--text-main);">Pay with M-Pesa</span>
+              <button class="modal-close" onclick="closeModal('modal-mpesa')">✕</button>
+            </div>
+
+            <div class="ui-card" style="text-align:center; padding:14px; background:var(--bg-input);">
+              <div style="font-size:0.8rem; color:var(--text-sub);">HirePath Pro — Monthly</div>
+              <div style="font-size:1.4rem; font-weight:800; color:var(--text-main); margin-top:2px;">KES 1.00</div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">M-Pesa phone number</label>
+              <div style="display:flex; align-items:center; background:var(--bg-input); border:1px solid var(--border-color); border-radius:10px; overflow:hidden;">
+                <span style="padding:0 12px; font-size:0.88rem; font-weight:600; color:var(--text-sub); border-right:1px solid var(--border-color);">+254</span>
+                <input type="tel" id="mpesa-phone" class="text-input" value="712345678" style="border:none; border-radius:0;">
+              </div>
+            </div>
+
+            <button class="btn btn-mpesa" onclick="triggerSTKPush()">
+              <span>Send M-Pesa STK Push</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- C. SIMULATED STK PROMPT -->
+        <div id="stk-prompt" class="stk-push-prompt">
+          <div style="font-size:0.75rem; text-transform:uppercase; color:#10b981; font-weight:700; margin-bottom:4px;">Safaricom SIM Toolkit</div>
+          <div style="font-weight:600; font-size:0.9rem; margin-bottom:6px;">Do you want to pay KES 1.00 to HirePath (Paybill 174379)?</div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button onclick="confirmSTK()" style="flex:1; background:#10b981; color:#fff; border:none; padding:8px 0; border-radius:6px; font-weight:600; font-size:0.8rem; cursor:pointer;">
+              Enter PIN & Pay
+            </button>
+            <button onclick="dismissSTK()" style="background:#374151; color:#cbd5e1; border:none; padding:8px 12px; border-radius:6px; font-size:0.8rem; cursor:pointer;">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Side Guide & Documentation Panel -->
+    <aside class="guide-panel">
+      <h2>Architecture & Flow Guide</h2>
+      <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:20px; line-height:1.5;">
+        This interactive simulator showcases how <strong>HirePath</strong> functions across mobile devices. Every screen maps directly to Vue components in <code class="code-tag">src/features/</code>.
+      </p>
+
+      <div class="guide-step">
+        <div class="step-badge">1</div>
+        <div class="step-content">
+          <h3>Hero Auth & Vertical Centering</h3>
+          <p>
+            Powered by <code class="code-tag">LoginView.vue</code> with the hero-scale 96×96px logo, vertical centering flex cluster, Supabase Auth email/password, and Google native/OAuth callbacks.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="step-badge">2</div>
+        <div class="step-content">
+          <h3>AI Question Generator</h3>
+          <p>
+            In <code class="code-tag">PracticeView.vue</code>, users paste a job description. The Supabase Edge Function <code class="code-tag">generate-questions</code> extracts the tech stack and crafts 3–5 tailored questions.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="step-badge">3</div>
+        <div class="step-content">
+          <h3>AI Coaching Chat Thread</h3>
+          <p>
+            In <code class="code-tag">SessionDetailView.vue</code>, candidates answer questions and receive instant AI critiques, scoring, and follow-up prompts delivered live via Supabase Realtime.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="step-badge">4</div>
+        <div class="step-content">
+          <h3>M-Pesa Daraja STK Push</h3>
+          <p>
+            Integrated with Safaricom Daraja API in <code class="code-tag">MpesaModal.vue</code>. Initiates STK pushes, verifies callbacks, activates Pro entitlements, and renders statements in <code class="code-tag">PaymentsView.vue</code>.
+          </p>
+        </div>
+      </div>
+
+      <h3 style="font-size:0.95rem; color:#fff; margin:20px 0 8px;">Documentation References</h3>
+      <a href="docs/TECHNICAL_README.md" class="doc-link-card">
+        <span>📘 Full Technical Architecture & Specs</span>
+        <span>→</span>
+      </a>
+      <a href="docs/backend-setup.md" class="doc-link-card">
+        <span>⚡ Supabase Setup & Edge Functions</span>
+        <span>→</span>
+      </a>
+      <a href="docs/daraja-api-stk-push-documentation.md" class="doc-link-card">
+        <span>💳 Safaricom Daraja M-Pesa Integration</span>
+        <span>→</span>
+      </a>
+      <a href="docs/FIREBASE_SETUP.md" class="doc-link-card">
+        <span>🔥 Firebase & Android Build Configuration</span>
+        <span>→</span>
+      </a>
+    </aside>
+
+  </div>
+
+  <script>
+    // Clock updater
+    function updateClock() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hrs}:${mins}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Screen Switching Logic
+    function showScreen(screenId) {
+      document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.add('active');
+
+      // Update Header nav buttons
+      document.querySelectorAll('.header-actions .nav-btn').forEach(btn => btn.classList.remove('active'));
+      const btnMap = {
+        'screen-login': 0,
+        'screen-practice': 1,
+        'screen-history': 2,
+        'screen-detail': 3,
+        'screen-profile': 4
+      };
+      if (btnMap[screenId] !== undefined) {
+        document.querySelectorAll('.header-actions .nav-btn')[btnMap[screenId]].classList.add('active');
+      }
+
+      // Update bottom tab bar
+      const tabBar = document.getElementById('app-tab-bar');
+      const authScreens = ['screen-login', 'screen-forgot'];
+      if (authScreens.includes(screenId)) {
+        tabBar.style.display = 'none';
+      } else {
+        tabBar.style.display = 'flex';
+      }
+
+      document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+      if (screenId === 'screen-practice') document.getElementById('tab-btn-practice').classList.add('active');
+      if (screenId === 'screen-history' || screenId === 'screen-detail') document.getElementById('tab-btn-history').classList.add('active');
+      if (screenId === 'screen-profile' || screenId === 'screen-payments') document.getElementById('tab-btn-profile').classList.add('active');
+    }
+
+    // Auth Tab toggle (Sign In vs Sign Up)
+    function setAuthTab(tab) {
+      document.getElementById('btn-tab-signin').classList.toggle('active', tab === 'signin');
+      document.getElementById('btn-tab-signup').classList.toggle('active', tab === 'signup');
+      document.getElementById('field-fullname').style.display = tab === 'signup' ? 'block' : 'none';
+      document.getElementById('login-btn-text').textContent = tab === 'signup' ? 'Create Account' : 'Sign in';
+    }
+
+    // Simulate Login
+    function simulateLogin() {
+      const btnText = document.getElementById('login-btn-text');
+      btnText.textContent = 'Authenticating…';
+      setTimeout(() => {
+        btnText.textContent = 'Sign in';
+        showScreen('screen-practice');
+      }, 500);
+    }
+
+    // Modal Handlers
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // STK Push Simulation
+    function triggerSTKPush() {
+      closeModal('modal-mpesa');
+      setTimeout(() => {
+        document.getElementById('stk-prompt').classList.add('active');
+      }, 600);
+    }
+
+    function dismissSTK() {
+      document.getElementById('stk-prompt').classList.remove('active');
+    }
+
+    function confirmSTK() {
+      dismissSTK();
+      setTimeout(() => {
+        alert('🎉 M-Pesa Payment Received (KES 1.00)! Your HirePath Pro account is now active.');
+        // Upgrade UI to Pro
+        document.getElementById('practice-plan-pill').textContent = 'Pro';
+        document.getElementById('practice-plan-pill').className = 'pill pill-pro';
+        document.getElementById('profile-tier-text').textContent = 'Pro Plan (Unlimited)';
+        document.getElementById('usage-text').textContent = 'Unlimited practice sessions';
+        document.getElementById('usage-left').textContent = 'Active';
+        document.getElementById('usage-bar').style.width = '100%';
+        showScreen('screen-practice');
+      }, 500);
+    }
+
+    // Accordion Toggle
+    function toggleAccordion(header) {
+      const body = header.nextElementSibling;
+      const isOpen = body.style.display !== 'none';
+      body.style.display = isOpen ? 'none' : 'block';
+      header.querySelector('span:last-child').textContent = isOpen ? '▾' : '▴';
+    }
+
+    // AI Generation Simulator
+    function simulateGenerate() {
+      const btn = event.currentTarget;
+      btn.innerHTML = '<span>⚡ Tailoring questions via AI…</span>';
+      btn.style.opacity = '0.7';
+      setTimeout(() => {
+        btn.innerHTML = '<span>⚡ Generate interview questions</span>';
+        btn.style.opacity = '1';
+        showScreen('screen-detail');
+      }, 1000);
+    }
+
+    // Theme Toggle
+    function setAppTheme(theme) {
+      document.querySelectorAll('.theme-seg-btn').forEach(b => b.classList.remove('active'));
+      if (theme === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+        document.getElementById('thm-light').classList.add('active');
+        document.getElementById('themeBtn').textContent = '🌙 Dark Mode';
+      } else if (theme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        document.getElementById('thm-dark').classList.add('active');
+        document.getElementById('themeBtn').textContent = '☀️ Light Mode';
+      } else {
+        document.body.removeAttribute('data-theme');
+        document.getElementById('thm-system').classList.add('active');
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.body.getAttribute('data-theme');
+      if (current === 'dark') {
+        setAppTheme('light');
+      } else {
+        setAppTheme('dark');
+      }
+    }
+  </script>
+</body>
+</html>
