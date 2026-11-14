@@ -1,4 +1,5 @@
 import { supabase } from '@/core/services/supabase';
+import { FunctionsHttpError } from '@supabase/supabase-js';
 import type { InterviewApi } from '@/core/services/interviewApi';
 import type {
   FeedbackMessage,
@@ -27,6 +28,19 @@ interface MessageRow {
   role: 'user' | 'coach';
   content: string;
   created_at: string;
+}
+
+/**
+ * Edge function errors carry the real reason (e.g. free_limit_reached) in the
+ * JSON body; error.message is only Supabase's generic "non-2xx status code".
+ */
+export async function edgeFunctionError(error: unknown): Promise<string> {
+  if (error instanceof FunctionsHttpError) {
+    const body = await error.context.json().catch(() => null);
+    const code = (body as { error?: string } | null)?.error;
+    if (code) return code;
+  }
+  return (error as { message?: string })?.message ?? 'request_failed';
 }
 
 interface SubscriptionRow {
@@ -97,8 +111,8 @@ export const supabaseInterviewApi: InterviewApi = {
       body: { jobDescription },
     });
     if (error) {
-      const message = (error as { message?: string })?.message ?? 'generate_questions_failed';
-      throw new Error(message.includes('free_limit') ? 'FREE_LIMIT_REACHED' : message);
+      const code = await edgeFunctionError(error);
+      throw new Error(code === 'free_limit_reached' ? 'FREE_LIMIT_REACHED' : code);
     }
     const session = (data as { session?: SessionRow })?.session;
     if (!session) throw new Error('generate_questions_failed');
@@ -148,7 +162,7 @@ export const supabaseInterviewApi: InterviewApi = {
         answer,
       },
     });
-    if (error) throw new Error((error as { message?: string })?.message ?? 'feedback_failed');
+    if (error) throw new Error(await edgeFunctionError(error));
 
     const thread = await fetchThread(sessionId);
     return { answers: thread[questionId] ?? [] };
