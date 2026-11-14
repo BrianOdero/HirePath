@@ -14,9 +14,11 @@
     <ion-content class="ion-padding">
       <div class="paywall">
         <div class="pricing card">
-          <p class="eyebrow">HirePath Pro</p>
-          <h2 class="price"><span class="amount">KES 1</span><span class="period">/ month</span></h2>
-          <p class="price-note">Unlimited AI practice. Cancel anytime.</p>
+          <div class="price-panel">
+            <p class="eyebrow">HirePath Pro</p>
+            <h2 class="price"><span class="amount">KES 1</span><span class="period">/ month</span></h2>
+            <p class="price-note">Unlimited AI practice. Cancel anytime.</p>
+          </div>
           <ul class="perks">
             <li><ion-icon :icon="checkmarkCircle" /> Unlimited practice sessions</li>
             <li><ion-icon :icon="checkmarkCircle" /> AI coaching feedback on your answers</li>
@@ -87,6 +89,26 @@ async function openMpesa(): Promise<void> {
   border-radius: 16px;
   padding: 22px;
   margin-top: 8px;
+  box-shadow: var(--hp-shadow-card);
+}
+
+.price-panel {
+  background: var(--hp-gold-gradient);
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+  color: #0b0f19;
+  box-shadow: var(--hp-gold-glow);
+}
+
+.price-panel .eyebrow {
+  color: rgba(11, 15, 25, 0.75);
+  font-weight: 800;
+}
+
+.price-panel .period,
+.price-panel .price-note {
+  color: rgba(11, 15, 25, 0.85);
 }
 
 .eyebrow {
@@ -104,7 +126,8 @@ async function openMpesa(): Promise<void> {
 
 .amount {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .period {
@@ -142,9 +165,7 @@ async function openMpesa(): Promise<void> {
   margin-top: 18px;
   --border-radius: 12px;
   min-height: 52px;
-  --background: #1dad5f;
-  --background-hover: #18a056;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
 }
