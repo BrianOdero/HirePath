@@ -1459,6 +1459,519 @@
       text-align: center;
     }
 
+    /* ==========================================================================
+       HEADER CLUSTER & TOOLBAR SCREEN JUMP
+       ========================================================================== */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      color: #0b0f19;
+      font-weight: 800;
+      font-size: 0.7rem;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+      transition: transform 0.2s ease;
+    }
+
+    .avatar-btn:hover { transform: translateY(-1px); }
+
+    .screen-jump {
+      background: var(--card-bg-glass);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .screen-jump:focus { border-color: var(--gold-500); }
+    .screen-jump option { background: var(--card-bg); color: var(--text-main); }
+
+    /* ==========================================================================
+       AUTH SCREENS (LOGIN / FORGOT / RESET)
+       ========================================================================== */
+    .auth-screen { text-align: center; padding-top: 34px; }
+
+    .auth-brand-mark {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 14px;
+      border-radius: 18px;
+      background: var(--gold-gradient);
+      color: #0b0f19;
+      font-size: 1.4rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--gold-glow);
+    }
+
+    .auth-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .auth-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 6px 0 18px;
+    }
+
+    .field-label {
+      display: block;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .auth-input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 11px 12px;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .auth-input:focus { border-color: var(--gold-500); }
+    .auth-input::placeholder { color: var(--text-dim); }
+
+    .input-prefix-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 0 12px;
+      transition: border-color 0.2s ease;
+    }
+
+    .input-prefix-wrap:focus-within { border-color: var(--gold-500); }
+
+    .input-prefix {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .input-prefix-wrap .auth-input {
+      border: none;
+      background: transparent;
+      padding: 11px 0;
+      flex: 1;
+    }
+
+    .field-error {
+      display: block;
+      text-align: left;
+      font-size: 0.7rem;
+      color: var(--rose-400);
+      margin-top: 5px;
+    }
+
+    .field-hint {
+      display: block;
+      text-align: left;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-top: 5px;
+    }
+
+    .auth-alt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .auth-link {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--font-sans);
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--gold-400);
+      cursor: pointer;
+    }
+
+    .auth-switch-row {
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .auth-success-card { border-color: rgba(16, 185, 129, 0.35); }
+
+    .auth-success-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--emerald-400);
+    }
+
+    .auth-success-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .divider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .divider-row::before, .divider-row::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    /* ==========================================================================
+       PROFILE SCREEN
+       ========================================================================== */
+    .profile-user-card { display: flex; align-items: center; gap: 12px; }
+
+    .profile-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      color: #0b0f19;
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: var(--gold-glow);
+    }
+
+    .profile-name {
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .profile-email {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .card-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    .card-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .plan-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .plan-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .usage-track {
+      width: 100%;
+      height: 7px;
+      background: var(--pill-bg);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .usage-fill {
+      width: 33%;
+      height: 100%;
+      background: var(--gold-gradient);
+      border-radius: 6px;
+    }
+
+    .usage-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+    }
+
+    .appearance-seg {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      background: var(--input-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .appearance-seg button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 6px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .appearance-seg button.active {
+      background: var(--pill-bg);
+      color: var(--gold-400);
+      box-shadow: var(--shadow-card);
+    }
+
+    .fine-print {
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ==========================================================================
+       MODAL 2 & 3: PAYWALL + M-PESA SHEET MODALS (reuses .modal-backdrop)
+       ========================================================================== */
+    .sheet-modal-container {
+      width: 100%;
+      max-width: 400px;
+      max-height: 90vh;
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.96) translateY(10px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.open .sheet-modal-container {
+      transform: scale(1) translateY(0);
+    }
+
+    .sheet-modal-header {
+      padding: 14px 18px;
+      background: var(--card-bg-elevated);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sheet-modal-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .sheet-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
+    .sheet-close-btn:hover { color: var(--text-main); background: var(--pill-bg); }
+
+    .sheet-modal-body { padding: 18px; overflow-y: auto; }
+
+    .price-panel {
+      background: var(--gold-gradient);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      color: #0b0f19;
+      margin-bottom: 14px;
+      box-shadow: var(--gold-glow);
+    }
+
+    .price-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    .price-amount {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-top: 2px;
+    }
+
+    .price-amount span { font-size: 0.85rem; font-weight: 700; }
+
+    .price-note { font-size: 0.74rem; font-weight: 600; margin-top: 2px; opacity: 0.85; }
+
+    .feature-list { list-style: none; margin: 0 0 16px; padding: 0; }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-main);
+      padding: 7px 0;
+      border-bottom: 1px dashed var(--border-subtle);
+    }
+
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list svg { color: var(--gold-400); flex-shrink: 0; }
+
+    .modal-fine-print {
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-top: 10px;
+    }
+
+    .mpesa-amount-card {
+      text-align: center;
+      background: var(--card-bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .mpesa-amount-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .mpesa-amount {
+      font-family: var(--font-mono);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--gold-400);
+      margin-top: 2px;
+    }
+
+    .state-block { text-align: center; padding: 10px 0 4px; }
+
+    .state-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    .state-icon.pending {
+      background: var(--amber-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--amber-400);
+    }
+
+    .state-icon.success {
+      background: var(--emerald-bg);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--emerald-400);
+    }
+
+    .state-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .state-text {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .spinner {
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(245, 158, 11, 0.25);
+      border-top-color: var(--gold-400);
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none !important; }
+
     /* Toast Notification */
     .toast-notification {
       position: fixed;
@@ -1570,6 +2083,21 @@
           Light Platinum
         </button>
       </div>
+
+      <!-- Screen Jump Dropdown -->
+      <div class="segmented-control">
+        <select class="screen-jump" id="screenJump" onchange="jumpToScreen(this.value)">
+          <option value="" selected>Jump to screen…</option>
+          <option value="tab-login">Login</option>
+          <option value="tab-forgot">Forgot Password</option>
+          <option value="tab-reset">Reset Password</option>
+          <option value="tab-studio">Practice Studio</option>
+          <option value="tab-feedback">Session Feedback</option>
+          <option value="tab-history">Career Readiness</option>
+          <option value="tab-payments">Payments &amp; Billing</option>
+          <option value="tab-profile">Profile</option>
+        </select>
+      </div>
     </div>
   </header>
 
@@ -1606,7 +2134,10 @@
                 <h2 class="section-title">Practice Studio</h2>
                 <p class="section-subtitle">AI-Powered Executive Role Simulation</p>
               </div>
-              <span class="badge badge-paid">PRO ACTIVE</span>
+              <div class="header-right">
+                <span class="badge badge-paid">PRO ACTIVE</span>
+                <button class="avatar-btn" onclick="switchTab('tab-profile')" title="Profile & Settings">WK</button>
+              </div>
             </div>
 
             <!-- 1.1 Job Description Parser Card -->
@@ -1733,9 +2264,12 @@
                 <h2 class="section-title">Session Feedback</h2>
                 <p class="section-subtitle">Staff Level Performance Critique</p>
               </div>
-              <button class="btn btn-outline btn-sm" onclick="switchTab('tab-history')">
-                All Sessions
-              </button>
+              <div class="header-right">
+                <button class="btn btn-outline btn-sm" onclick="switchTab('tab-history')">
+                  All Sessions
+                </button>
+                <button class="avatar-btn" onclick="switchTab('tab-profile')" title="Profile & Settings">WK</button>
+              </div>
             </div>
 
             <!-- Executive Score Banner -->
@@ -1857,7 +2391,10 @@
                 <h2 class="section-title">Career Readiness</h2>
                 <p class="section-subtitle">Real-Time Interview Competency Matrix</p>
               </div>
-              <span class="badge badge-paid">TIER 1 TARGETS</span>
+              <div class="header-right">
+                <span class="badge badge-paid">TIER 1 TARGETS</span>
+                <button class="avatar-btn" onclick="switchTab('tab-profile')" title="Profile & Settings">WK</button>
+              </div>
             </div>
 
             <!-- KPI Cards Grid -->
@@ -1967,10 +2504,13 @@
                 <h2 class="section-title">Payments & Billing</h2>
                 <p class="section-subtitle">M-Pesa Receipts & Subscription Ledger</p>
               </div>
-              <button class="btn btn-gold btn-sm" onclick="openPdfModal('QBC89324KD')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Export PDF
-              </button>
+              <div class="header-right">
+                <button class="btn btn-gold btn-sm" onclick="openPdfModal('QBC89324KD')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Export PDF
+                </button>
+                <button class="avatar-btn" onclick="switchTab('tab-profile')" title="Profile & Settings">WK</button>
+              </div>
             </div>
 
             <!-- Total Paid Executive Card -->
@@ -2107,6 +2647,184 @@
                   </button>
                 </div>
               </div>
+            </div>
+          </section>
+
+          <!-- ================================================================
+               SCREEN 5: PROFILE & SETTINGS
+               ================================================================ -->
+          <section id="tab-profile" class="app-screen">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">Profile</h2>
+                <p class="section-subtitle">Account & App Preferences</p>
+              </div>
+              <span class="badge badge-paid">FREE PLAN</span>
+            </div>
+
+            <!-- 5.1 Account Identity Card -->
+            <div class="glass-card profile-user-card">
+              <div class="profile-avatar">WK</div>
+              <div>
+                <div class="profile-name">Wanjiku Kamau</div>
+                <div class="profile-email">candidate@hirepath.io</div>
+                <div style="font-size:0.68rem; color:var(--text-dim); margin-top:3px; font-family:var(--font-mono);">Member since Sep 2026</div>
+              </div>
+            </div>
+
+            <!-- 5.2 Plan & Usage Card -->
+            <div class="glass-card">
+              <div class="plan-row">
+                <span class="plan-name">Free Plan — Interview Practice</span>
+                <span class="badge badge-pending">2 LEFT</span>
+              </div>
+              <div class="usage-track"><div class="usage-fill"></div></div>
+              <div class="usage-meta">
+                <span>Usage this month</span>
+                <span>1 of 3 sessions</span>
+              </div>
+              <button class="btn btn-gold btn-block" style="margin-top:12px;" onclick="openPaywallModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+                Upgrade to Pro — KES 1/month
+              </button>
+            </div>
+
+            <!-- 5.3 Payments Link Card -->
+            <div class="glass-card">
+              <div class="card-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                Payments
+              </div>
+              <p class="card-sub">Track M-Pesa transactions and download PDF receipts.</p>
+              <button class="btn btn-outline btn-sm btn-block" onclick="switchTab('tab-payments')">View Transactions & Billing</button>
+            </div>
+
+            <!-- 5.4 Appearance Card -->
+            <div class="glass-card">
+              <div class="card-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                Appearance
+              </div>
+              <div class="appearance-seg" id="appearanceSeg">
+                <button class="active" onclick="setAppearance(this, 'dark')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                  Dark
+                </button>
+                <button onclick="setAppearance(this, 'light')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg>
+                  Light
+                </button>
+                <button onclick="setAppearance(this, 'system')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  System
+                </button>
+              </div>
+              <span class="field-hint" style="margin-top:8px;">Theme preference is stored on this device.</span>
+            </div>
+
+            <!-- 5.5 Sign Out -->
+            <button class="btn btn-outline btn-block" onclick="signOut()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+            <p class="fine-print">HirePath v0.1 · Terms · Privacy</p>
+          </section>
+
+          <!-- ================================================================
+               SCREEN 6: LOGIN (AUTH)
+               ================================================================ -->
+          <section id="tab-login" class="app-screen auth-screen">
+            <div class="auth-brand-mark">H</div>
+            <h2 class="auth-title">Welcome back</h2>
+            <p class="auth-subtitle">Sign in to continue your interview practice</p>
+
+            <div class="glass-card" style="text-align:left;">
+              <span class="field-label">Email address</span>
+              <input type="email" class="auth-input" placeholder="you@example.com" autocomplete="off">
+              <span class="field-label" style="margin-top:14px;">Password</span>
+              <input type="password" class="auth-input" placeholder="Your password">
+              <div class="auth-alt-row" style="justify-content:flex-end;">
+                <button class="auth-link" onclick="switchTab('tab-forgot')">Forgot password?</button>
+              </div>
+              <button class="btn btn-gold btn-block" style="margin-top:14px;" onclick="demoSignIn()">
+                Sign In
+              </button>
+              <div class="divider-row">or continue with</div>
+              <button class="btn btn-outline btn-block" onclick="showToast('Google Sign-In runs through the Capacitor plugin in production')">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                Continue with Google
+              </button>
+            </div>
+
+            <div class="auth-switch-row">
+              New to HirePath?
+              <button class="auth-link" onclick="showToast('Demo: sign-up shares this layout with full-name & confirm-password fields')">Create an account</button>
+            </div>
+          </section>
+
+          <!-- ================================================================
+               SCREEN 7: FORGOT PASSWORD (AUTH)
+               ================================================================ -->
+          <section id="tab-forgot" class="app-screen auth-screen">
+            <div class="auth-brand-mark">H</div>
+            <h2 class="auth-title">Reset your password</h2>
+            <p class="auth-subtitle">Enter your email and we'll send a secure reset link</p>
+
+            <div class="glass-card" id="forgotFormCard" style="text-align:left;">
+              <span class="field-label">Email address</span>
+              <input type="email" class="auth-input" id="forgotEmail" placeholder="you@example.com" autocomplete="off">
+              <button class="btn btn-gold btn-block" style="margin-top:14px;" onclick="sendResetLink()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Send Reset Link
+              </button>
+              <div class="auth-alt-row" style="justify-content:center; margin-top:14px;">
+                <button class="auth-link" onclick="switchTab('tab-login')">← Back to Sign In</button>
+              </div>
+            </div>
+
+            <div class="glass-card auth-success-card hidden" id="forgotSuccessCard" style="text-align:left;">
+              <span class="auth-success-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Reset link sent
+              </span>
+              <p class="auth-success-text">We emailed a secure reset link valid for 60 minutes to <strong id="forgotEmailEcho">your inbox</strong>. Check your spam folder if it doesn't arrive.</p>
+              <button class="btn btn-outline btn-sm btn-block" style="margin-top:10px;" onclick="switchTab('tab-reset')">Open Reset Link →</button>
+              <div class="auth-alt-row" style="justify-content:center; margin-top:10px;">
+                <button class="auth-link" onclick="switchTab('tab-login')">← Back to Sign In</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================================================================
+               SCREEN 8: RESET PASSWORD (AUTH)
+               ================================================================ -->
+          <section id="tab-reset" class="app-screen auth-screen">
+            <div class="auth-brand-mark">H</div>
+            <h2 class="auth-title">Set a new password</h2>
+            <p class="auth-subtitle">Choose a strong password for your account</p>
+
+            <div class="glass-card" id="resetFormCard" style="text-align:left;">
+              <span class="field-label">New password</span>
+              <input type="password" class="auth-input" placeholder="At least 8 characters">
+              <span class="field-hint">Use 8+ characters with a mix of letters, numbers &amp; symbols.</span>
+              <span class="field-label" style="margin-top:14px;">Confirm new password</span>
+              <input type="password" class="auth-input" placeholder="Re-enter your password">
+              <button class="btn btn-gold btn-block" style="margin-top:16px;" onclick="updatePassword()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Update Password
+              </button>
+              <div class="auth-alt-row" style="justify-content:center; margin-top:14px;">
+                <button class="auth-link" onclick="switchTab('tab-login')">← Back to Sign In</button>
+              </div>
+            </div>
+
+            <div class="glass-card auth-success-card hidden" id="resetSuccessCard" style="text-align:left;">
+              <span class="auth-success-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+                Password updated
+              </span>
+              <p class="auth-success-text">Your password has been changed. Sign in with your new credentials to continue practising.</p>
+              <button class="btn btn-gold btn-block" style="margin-top:10px;" onclick="switchTab('tab-login')">Continue to Sign In</button>
             </div>
           </section>
 
@@ -2282,6 +3000,97 @@
     </div>
   </div>
 
+  <!-- ==========================================================================
+       PAYWALL SHEET MODAL (HIREPATH PRO)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="paywallModal" onclick="closePaywallModal(event)">
+    <div class="sheet-modal-container" onclick="event.stopPropagation()">
+      <div class="sheet-modal-header">
+        <div class="sheet-modal-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          HirePath Pro
+        </div>
+        <button class="sheet-close-btn" onclick="closePaywallModalDirect()">✕</button>
+      </div>
+
+      <div class="sheet-modal-body">
+        <div class="price-panel">
+          <div class="price-eyebrow">HirePath Pro</div>
+          <div class="price-amount">KES 1<span> / month</span></div>
+          <div class="price-note">Unlimited AI practice. Cancel anytime.</div>
+        </div>
+
+        <ul class="feature-list">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Unlimited practice sessions</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> AI coaching feedback on your answers</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Follow-up questions to sharpen your responses</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Full session history and notes</li>
+        </ul>
+
+        <button class="btn btn-gold btn-block" onclick="paywallToMpesa()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Pay with M-Pesa
+        </button>
+        <div class="modal-fine-print">Secured by Safaricom M-Pesa · Cancel anytime from Profile</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       M-PESA STK PUSH SHEET MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="mpesaModal" onclick="closeMpesaModal(event)">
+    <div class="sheet-modal-container" onclick="event.stopPropagation()">
+      <div class="sheet-modal-header">
+        <div class="sheet-modal-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          Pay with M-Pesa
+        </div>
+        <button class="sheet-close-btn" onclick="closeMpesaModalDirect()">✕</button>
+      </div>
+
+      <div class="sheet-modal-body">
+        <!-- Pane 1: Phone Entry -->
+        <div id="mpesaFormPane">
+          <div class="mpesa-amount-card">
+            <div class="mpesa-amount-label">HirePath Pro — monthly</div>
+            <div class="mpesa-amount">KES 1</div>
+          </div>
+          <span class="field-label">M-Pesa phone number</span>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">+254</span>
+            <input type="tel" class="auth-input" id="mpesaPhone" placeholder="712 345 678" maxlength="12" autocomplete="off">
+          </div>
+          <span class="field-error hidden" id="mpesaPhoneError">Enter a valid Safaricom number starting with 7 or 1.</span>
+          <button class="btn btn-gold btn-block" style="margin-top:14px;" onclick="mpesaPay()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Send STK Push — KES 1
+          </button>
+          <div class="modal-fine-print">You'll get a prompt on your phone. Enter your M-Pesa PIN to approve.</div>
+        </div>
+
+        <!-- Pane 2: Pending STK Push -->
+        <div id="mpesaPendingPane" class="state-block hidden">
+          <div class="spinner"></div>
+          <div class="state-title">Waiting for your approval</div>
+          <p class="state-text">Check your phone and enter your M-Pesa PIN to approve the payment of <strong style="font-family:var(--font-mono); color:var(--gold-400);">KES 1</strong>.</p>
+          <span class="badge badge-pending" style="margin-top:10px;">STK PUSH SENT</span>
+        </div>
+
+        <!-- Pane 3: Success -->
+        <div id="mpesaSuccessPane" class="state-block hidden">
+          <div class="state-icon success">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="state-title">Welcome to Pro!</div>
+          <p class="state-text">Payment received. Unlimited AI practice is now unlocked on your account.</p>
+          <button class="btn btn-gold btn-block" style="margin-top:14px;" onclick="mpesaStartPractising()">Start Practising</button>
+          <button class="btn btn-outline btn-block" style="margin-top:8px;" onclick="mpesaViewTransactions()">View Transactions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Notification Toast -->
   <div class="toast-notification" id="toastMessage">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -2339,6 +3148,8 @@
     }
 
     // 4. Tab Navigation Switcher
+    const AUTH_SCREENS = ['tab-login', 'tab-forgot', 'tab-reset'];
+
     function switchTab(tabId) {
       // Hide all screens
       const screens = document.querySelectorAll('.app-screen');
@@ -2358,6 +3169,16 @@
       const activeBtn = document.getElementById(`tabBtn-${tabId.replace('tab-', '')}`);
       if (activeBtn) {
         activeBtn.classList.add('active');
+      }
+
+      // Auth screens run without the bottom tab bar (matches production app)
+      const tabbar = document.querySelector('.app-tabbar');
+      if (tabbar) tabbar.style.display = AUTH_SCREENS.includes(tabId) ? 'none' : '';
+
+      // Keep the toolbar "Jump to screen" dropdown in sync
+      const jump = document.getElementById('screenJump');
+      if (jump && jump.querySelector(`option[value="${tabId}"]`)) {
+        jump.value = tabId;
       }
 
       // Scroll container to top
@@ -2578,6 +3399,119 @@
       } else {
         showToast('Receipt share link copied to clipboard!');
       }
+    }
+
+    // 10. Toolbar "Jump to screen" Dropdown
+    function jumpToScreen(value) {
+      if (value) switchTab(value);
+    }
+
+    // 11. Auth & Profile Demo Flows
+    function demoSignIn() {
+      showToast('Signing you in with Supabase Auth...');
+      setTimeout(() => {
+        switchTab('tab-studio');
+        showToast('Signed in as Wanjiku Kamau');
+      }, 700);
+    }
+
+    function sendResetLink() {
+      const email = (document.getElementById('forgotEmail').value || '').trim();
+      document.getElementById('forgotEmailEcho').textContent = email || 'candidate@hirepath.io';
+      document.getElementById('forgotFormCard').classList.add('hidden');
+      document.getElementById('forgotSuccessCard').classList.remove('hidden');
+      showToast('Password reset link sent');
+    }
+
+    function updatePassword() {
+      document.getElementById('resetFormCard').classList.add('hidden');
+      document.getElementById('resetSuccessCard').classList.remove('hidden');
+      showToast('Password updated successfully');
+    }
+
+    function setAppearance(btn, mode) {
+      document.querySelectorAll('#appearanceSeg button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (mode === 'system') {
+        showToast('Following system theme (demo)');
+      } else {
+        setTheme(mode);
+      }
+    }
+
+    function signOut() {
+      switchTab('tab-login');
+      showToast('Signed out of HirePath');
+    }
+
+    // 12. Paywall & M-Pesa Sheet Modals
+    function openPaywallModal() {
+      document.getElementById('paywallModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePaywallModal(event) {
+      if (event.target.id === 'paywallModal') closePaywallModalDirect();
+    }
+
+    function closePaywallModalDirect() {
+      document.getElementById('paywallModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function paywallToMpesa() {
+      closePaywallModalDirect();
+      setTimeout(openMpesaModal, 200);
+    }
+
+    function resetMpesaPanes() {
+      document.getElementById('mpesaFormPane').classList.remove('hidden');
+      document.getElementById('mpesaPendingPane').classList.add('hidden');
+      document.getElementById('mpesaSuccessPane').classList.add('hidden');
+      document.getElementById('mpesaPhoneError').classList.add('hidden');
+    }
+
+    function openMpesaModal() {
+      resetMpesaPanes();
+      document.getElementById('mpesaModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMpesaModal(event) {
+      if (event.target.id === 'mpesaModal') closeMpesaModalDirect();
+    }
+
+    function closeMpesaModalDirect() {
+      document.getElementById('mpesaModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function mpesaPay() {
+      const phone = (document.getElementById('mpesaPhone').value || '').trim().replace(/\s/g, '');
+      if (!/^(?:7|1)\d{8}$/.test(phone)) {
+        document.getElementById('mpesaPhoneError').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('mpesaPhoneError').classList.add('hidden');
+      document.getElementById('mpesaFormPane').classList.add('hidden');
+      document.getElementById('mpesaPendingPane').classList.remove('hidden');
+      showToast(`STK push sent to +254 ${phone}`);
+      setTimeout(() => {
+        document.getElementById('mpesaPendingPane').classList.add('hidden');
+        document.getElementById('mpesaSuccessPane').classList.remove('hidden');
+        showToast('Payment confirmed — Pro unlocked');
+      }, 2800);
+    }
+
+    function mpesaStartPractising() {
+      closeMpesaModalDirect();
+      switchTab('tab-studio');
+      showToast('Welcome to Pro — unlimited sessions unlocked');
+    }
+
+    function mpesaViewTransactions() {
+      closeMpesaModalDirect();
+      switchTab('tab-payments');
     }
   </script>
 </body>
