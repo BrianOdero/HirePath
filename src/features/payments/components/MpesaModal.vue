@@ -308,6 +308,7 @@ onBeforeUnmount(stopWatching);
   padding: 18px;
   text-align: center;
   margin-top: 8px;
+  box-shadow: var(--hp-shadow-card);
 }
 
 .amount-label {
@@ -318,8 +319,10 @@ onBeforeUnmount(stopWatching);
 
 .amount {
   margin: 0;
+  font-family: var(--hp-font-mono);
   font-size: 2rem;
   font-weight: 700;
+  color: var(--ion-color-primary);
 }
 
 .field {
@@ -379,9 +382,7 @@ onBeforeUnmount(stopWatching);
   margin-top: 20px;
   --border-radius: 12px;
   min-height: 50px;
-  --background: #1dad5f;
-  --background-hover: #18a056;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .state {
