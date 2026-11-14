@@ -189,7 +189,7 @@ async function downloadReport(): Promise<void> {
   background: var(--ion-card-background);
   border: 1px solid var(--ion-border-color);
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(28, 36, 48, 0.06);
+  box-shadow: var(--hp-shadow-card);
 }
 
 .summary {
