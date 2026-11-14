@@ -84,9 +84,9 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   border-radius: 24px;
-  background: var(--ion-color-primary);
-  color: #fff;
-  box-shadow: 0 10px 25px -5px rgba(31, 58, 95, 0.35);
+  background: var(--hp-gold-gradient);
+  color: #0b0f19;
+  box-shadow: var(--hp-gold-glow);
 }
 
 .logo ion-icon {
@@ -114,7 +114,7 @@ onMounted(() => {
   border: 1px solid var(--ion-border-color);
   border-radius: 16px;
   padding: 24px 20px 16px;
-  box-shadow: 0 1px 3px rgba(28, 36, 48, 0.06);
+  box-shadow: var(--hp-shadow-card);
 }
 
 .divider {
