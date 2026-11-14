@@ -13,8 +13,9 @@ function env(name: string): string {
 export function createAuthedClient(authHeader: string | null) {
   if (!authHeader) throw new Error('Missing authorization header');
   const url = env('SUPABASE_URL');
-  const anonKey = env('SUPABASE_ANON_KEY');
-  return createClient(url, anonKey, {
+  const key = Deno.env.get('SUPABASE_PUBLISHABLE_KEY') ?? Deno.env.get('SUPABASE_ANON_KEY');
+  if (!key) throw new Error('Missing SUPABASE_PUBLISHABLE_KEY (or legacy SUPABASE_ANON_KEY)');
+  return createClient(url, key, {
     global: { headers: { Authorization: authHeader } },
   });
 }

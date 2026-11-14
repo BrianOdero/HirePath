@@ -90,10 +90,6 @@
       <p v-if="errors.confirmPassword" class="field-error">{{ errors.confirmPassword }}</p>
     </div>
 
-    <ion-text v-if="formError" color="danger">
-      <p class="form-error">{{ formError }}</p>
-    </ion-text>
-
     <ion-button expand="block" type="submit" :disabled="loading" class="submit-btn">
       <ion-spinner v-if="loading" name="crescent" />
       <span v-else>{{ isSignUp ? 'Create account' : 'Sign in' }}</span>
@@ -117,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import {
   IonButton,
@@ -125,9 +121,9 @@ import {
   IonInputPasswordToggle,
   IonLabel,
   IonSpinner,
-  IonText,
   IonToast,
 } from '@ionic/vue';
+import { showErrorToast } from '@/core/composables/useErrorToast';
 import { useAuthStore } from '../stores/useAuthStore';
 import { authErrorMessage, isAuthErrorCode } from '../utils/authErrors';
 
@@ -146,6 +142,11 @@ const formError = ref('');
 const showToast = ref(false);
 const toastMessage = ref('');
 const needsConfirmation = ref(false);
+
+// Runtime auth failures (sign-in/up, resend) surface as the global error toast.
+watch(formError, (message) => {
+  if (message) showErrorToast(message);
+});
 
 const errors = ref<{
   fullName?: string;
@@ -307,12 +308,6 @@ async function handleSubmit() {
   --padding-start: 14px;
   --padding-end: 8px;
   min-height: 48px;
-}
-
-.form-error {
-  margin: 0 0 10px;
-  font-size: 0.85rem;
-  color: var(--ion-color-danger);
 }
 
 .submit-btn {

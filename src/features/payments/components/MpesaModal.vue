@@ -35,10 +35,6 @@
           <p v-if="errors.phone" class="field-error">{{ errors.phone }}</p>
         </div>
 
-        <ion-text v-if="formError" color="danger">
-          <p class="form-error">{{ formError }}</p>
-        </ion-text>
-
         <ion-button
           v-if="status === 'idle'"
           expand="block"
@@ -85,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { alertCircle, checkmarkCircle, close } from 'ionicons/icons';
 import {
@@ -98,12 +94,12 @@ import {
   IonLabel,
   IonPage,
   IonSpinner,
-  IonText,
   IonTitle,
   IonToolbar,
   modalController,
 } from '@ionic/vue';
 import type { RealtimeChannel } from '@supabase/supabase-js';
+import { showErrorToast } from '@/core/composables/useErrorToast';
 import { supabase } from '@/core/services/supabase';
 import { subscribeOnce } from '@/core/services/realtime';
 
@@ -118,6 +114,11 @@ const starting = ref(false);
 const formError = ref('');
 const failureMessage = ref('Your payment was not completed. You can try again — no charge was made.');
 const errors = ref<{ phone?: string }>({});
+
+// Push failures toast immediately; the failed-state card stays as the retry surface.
+watch(formError, (message) => {
+  if (message) showErrorToast(message);
+});
 
 let checkoutRequestId = '';
 let paymentId = '';
@@ -202,6 +203,7 @@ function settleFailed(resultDesc: string | null): void {
   failureMessage.value =
     resultDesc ??
     'Your payment was not completed. You can try again — no charge was made.';
+  showErrorToast(failureMessage.value);
 }
 
 function settleUnresolved(): void {
@@ -209,6 +211,7 @@ function settleUnresolved(): void {
   status.value = 'failed';
   failureMessage.value =
     "We haven't received confirmation from M-Pesa yet. If you entered your PIN, Pro will activate automatically — check M-Pesa messages.";
+  showErrorToast(failureMessage.value);
 }
 
 function clearWatchdog(): void {
@@ -370,12 +373,6 @@ onBeforeUnmount(stopWatching);
   margin: 6px 2px 0;
   font-size: 0.8rem;
   color: var(--ion-color-danger);
-}
-
-.form-error {
-  margin: 12px 0 0;
-  color: var(--ion-color-danger);
-  font-size: 0.85rem;
 }
 
 .send-btn {

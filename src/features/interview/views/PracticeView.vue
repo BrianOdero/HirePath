@@ -91,15 +91,13 @@
             <ion-skeleton-text animated style="width: 70%" />
           </div>
         </div>
-
-        <p v-if="errorMessage" class="generate-error">{{ errorMessage }}</p>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import {
   IonButton,
   IonContent,
@@ -109,6 +107,7 @@ import {
   IonTextarea,
 } from '@ionic/vue';
 import { useRouter } from 'vue-router';
+import { showErrorToast } from '@/core/composables/useErrorToast';
 import { useAuthStore } from '@/features/authentication/stores/useAuthStore';
 import {
   useGenerateQuestions,
@@ -148,6 +147,7 @@ const errorMessage = computed(() => {
   }
   return message || '';
 });
+watch(errorMessage, (message) => showErrorToast(message));
 const usagePercent = computed(() => {
   if (!plan.value) return '0%';
   if (plan.value.tier === 'pro') return '100%';

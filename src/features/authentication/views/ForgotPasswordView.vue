@@ -43,10 +43,6 @@
               <p v-if="errors.email" class="field-error">{{ errors.email }}</p>
             </div>
 
-            <ion-text v-if="formError" color="danger">
-              <p class="form-error">{{ formError }}</p>
-            </ion-text>
-
             <ion-button expand="block" type="submit" :disabled="loading" class="submit-btn">
               <ion-spinner v-if="loading" name="crescent" />
               <span v-else>Send reset link</span>
@@ -59,10 +55,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { arrowBack, briefcase, mailOutline } from 'ionicons/icons';
-import { IonButton, IonContent, IonIcon, IonInput, IonLabel, IonPage, IonSpinner, IonText } from '@ionic/vue';
+import { IonButton, IonContent, IonIcon, IonInput, IonLabel, IonPage, IonSpinner } from '@ionic/vue';
+import { showErrorToast } from '@/core/composables/useErrorToast';
 import { useAuthStore } from '../stores/useAuthStore';
 import { authErrorMessage } from '../utils/authErrors';
 
@@ -75,6 +72,11 @@ const loading = ref(false);
 const sent = ref(false);
 const formError = ref('');
 const errors = ref<{ email?: string }>({});
+
+// Runtime auth failures surface as the global error toast.
+watch(formError, (message) => {
+  if (message) showErrorToast(message);
+});
 
 function clearError() {
   errors.value = {};
@@ -214,12 +216,6 @@ function goToLogin() {
 .field-error {
   margin: 6px 2px 0;
   font-size: 0.8rem;
-  color: var(--ion-color-danger);
-}
-
-.form-error {
-  margin: 0 0 10px;
-  font-size: 0.85rem;
   color: var(--ion-color-danger);
 }
 

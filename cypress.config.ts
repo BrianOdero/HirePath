@@ -20,8 +20,8 @@ function envFromDotEnv(): Record<string, string> {
 }
 
 function adminHeaders() {
-  const key = envFromDotEnv().VITE_SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) throw new Error('VITE_SUPABASE_SERVICE_ROLE_KEY not found in .env');
+  const key = envFromDotEnv().SUPABASE_SECRET_KEY;
+  if (!key) throw new Error('SUPABASE_SECRET_KEY not found in .env');
   return {
     apikey: key,
     Authorization: `Bearer ${key}`,

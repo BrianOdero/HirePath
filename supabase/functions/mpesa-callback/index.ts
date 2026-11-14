@@ -3,7 +3,8 @@
 // (or renews) Pro on success. Idempotent + quick HTTP 200 per the doc.
 
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { json } from '../_shared/cors.ts';
+import { corsHeaders, json } from '../_shared/cors.ts';
+import { adminKey } from '../_shared/admin.ts';
 import { activatePro } from '../_shared/subscription.ts';
 
 function env(name: string): string {
@@ -31,7 +32,7 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const { checkoutRequestId, code, desc } = summarize(body);
 
-    const supabase = createClient(env('SUPABASE_URL'), env('SUPABASE_SERVICE_ROLE_KEY'));
+    const supabase = createClient(env('SUPABASE_URL'), adminKey());
 
     // ---- locate payment (service role, no RLS)
     const { data: payment, error: findError } = await supabase

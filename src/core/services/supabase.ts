@@ -1,10 +1,7 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 export const projectUrl = import.meta.env.VITE_SUPABASE_PROJECT_URL as string | undefined;
-const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-
-const clientKey = publishableKey ?? anonKey;
+const clientKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
 
 // Log configuration status for debugging
 console.log('Supabase config check:', {
@@ -14,7 +11,7 @@ console.log('Supabase config check:', {
 });
 
 if (!projectUrl || !clientKey) {
-  const errorMsg = 'Missing Supabase environment variables. Set VITE_SUPABASE_PROJECT_URL and VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY) in .env';
+  const errorMsg = 'Missing Supabase environment variables. Set VITE_SUPABASE_PROJECT_URL and VITE_SUPABASE_PUBLISHABLE_KEY in .env';
   console.error(errorMsg);
 
   // Show visible error instead of throwing (which causes white screen)
@@ -39,7 +36,7 @@ if (!projectUrl || !clientKey) {
       <p style="margin-bottom: 10px;">Missing required Supabase environment variables:</p>
       <ul style="margin-bottom: 20px; color: #ffaa44;">
         ${!projectUrl ? '<li>VITE_SUPABASE_PROJECT_URL</li>' : ''}
-        ${!clientKey ? '<li>VITE_SUPABASE_PUBLISHABLE_KEY or VITE_SUPABASE_ANON_KEY</li>' : ''}
+        ${!clientKey ? '<li>VITE_SUPABASE_PUBLISHABLE_KEY</li>' : ''}
       </ul>
       <p style="margin-bottom: 10px;">To fix this:</p>
       <ol style="color: #aaa; line-height: 1.8;">

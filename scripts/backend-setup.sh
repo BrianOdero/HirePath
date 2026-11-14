@@ -10,8 +10,8 @@ set -euo pipefail
 
 PROJECT_REF="vdrdistisykdigqilnpc"
 
-# ---- secrets (fill in; OpenAI is required, MPESA only for Phase D)
-if [ -n "${OPENAI_API_KEY:-}" ] || [ -f .env ]; then
+# ---- secrets (fill in; OpenRouter preferred with OpenAI fallback, MPESA for payments)
+if [ -n "${OPENROUTER_API_KEY:-}" ] || [ -f .env ]; then
   : # .env is a fallback source below
 fi
 
@@ -28,12 +28,16 @@ read_env() {
   grep -E "^$1=" .env 2>/dev/null | tail -1 | cut -d= -f2- | tr -d '"' || true
 }
 
+set_secret OPENROUTER_API_KEY "${OPENROUTER_API_KEY:-$(read_env OPENROUTER_API_KEY)}"
+set_secret OPENROUTER_MODEL "${OPENROUTER_MODEL:-$(read_env OPENROUTER_MODEL)}"
+set_secret OPENROUTER_BASE_URL "${OPENROUTER_BASE_URL:-$(read_env OPENROUTER_BASE_URL)}"
 set_secret OPENAI_API_KEY "${OPENAI_API_KEY:-$(read_env OPENAI_API_KEY)}"
 set_secret MPESA_CONSUMER_KEY "${MPESA_CONSUMER_KEY:-$(read_env MPESA_CONSUMER_KEY)}"
 set_secret MPESA_CONSUMER_SECRET "${MPESA_CONSUMER_SECRET:-$(read_env MPESA_CONSUMER_SECRET)}"
 set_secret MPESA_SHORTCODE "${MPESA_SHORTCODE:-$(read_env MPESA_SHORTCODE)}"
 set_secret MPESA_PASSKEY "${MPESA_PASSKEY:-$(read_env MPESA_PASSKEY)}"
-set_secret MPESA_PRICE "${MPESA_PRICE:-250}"
+PRICE_VALUE="${MPESA_PRICE:-$(read_env MPESA_PRICE)}"
+set_secret MPESA_PRICE "${PRICE_VALUE:-1}"
 
 echo "==> Linking project $PROJECT_REF"
 supabase link --project-ref "$PROJECT_REF" --yes

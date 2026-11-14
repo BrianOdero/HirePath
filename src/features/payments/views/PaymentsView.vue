@@ -40,7 +40,6 @@
               <ion-icon v-else slot="start" :icon="downloadOutline" />
               {{ reporting ? 'Generating PDF…' : 'Download PDF report' }}
             </ion-button>
-            <p v-if="reportError" class="report-error">{{ reportError }}</p>
           </section>
 
           <ion-list class="payments-list" :inset="false">
@@ -90,6 +89,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { showErrorToast } from '@/core/composables/useErrorToast';
 import { downloadOutline, receiptOutline } from 'ionicons/icons';
 import {
   IonBackButton,
@@ -117,7 +117,6 @@ import type { PaymentStatus } from '@/core/services/paymentsApi';
 
 const { data: payments, isLoading, refetch } = usePayments();
 const reporting = ref(false);
-const reportError = ref('');
 const showToast = ref(false);
 const toastMessage = ref('');
 const toastColor = ref<'success' | 'danger'>('success');
@@ -161,14 +160,12 @@ async function onRefresh(event: CustomEvent): Promise<void> {
 async function downloadReport(): Promise<void> {
   if (reporting.value) return;
   reporting.value = true;
-  reportError.value = '';
   try {
     const { fileName } = await generatePaymentReportPdf();
     toastColor.value = 'success';
     toastMessage.value = `Payment report saved: ${fileName}`;
   } catch (err) {
-    toastColor.value = 'danger';
-    toastMessage.value = err instanceof Error ? err.message : 'Could not generate the report.';
+    showErrorToast(err instanceof Error ? err.message : 'Could not generate the report.');
   } finally {
     reporting.value = false;
     showToast.value = true;
@@ -256,13 +253,6 @@ async function downloadReport(): Promise<void> {
   --border-radius: 10px;
   min-height: 46px;
   font-weight: 600;
-}
-
-.report-error {
-  margin: 10px 2px 0;
-  font-size: 0.8rem;
-  color: var(--ion-color-danger);
-  text-align: center;
 }
 
 .payments-list {

@@ -69,10 +69,6 @@
               <p v-if="errors.confirmPassword" class="field-error">{{ errors.confirmPassword }}</p>
             </div>
 
-            <ion-text v-if="formError" color="danger">
-              <p class="form-error">{{ formError }}</p>
-            </ion-text>
-
             <ion-button expand="block" type="submit" :disabled="loading" class="submit-btn">
               <ion-spinner v-if="loading" name="crescent" />
               <span v-else>Update password</span>
@@ -85,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { alertCircleOutline, arrowBack, lockClosed } from 'ionicons/icons';
 import {
@@ -97,8 +93,8 @@ import {
   IonLabel,
   IonPage,
   IonSpinner,
-  IonText,
 } from '@ionic/vue';
+import { showErrorToast } from '@/core/composables/useErrorToast';
 import { useAuthStore } from '../stores/useAuthStore';
 import { authErrorMessage } from '../utils/authErrors';
 
@@ -111,6 +107,11 @@ const confirmPassword = ref('');
 const loading = ref(false);
 const formError = ref('');
 const errors = ref<{ password?: string; confirmPassword?: string }>({});
+
+// Runtime auth failures surface as the global error toast.
+watch(formError, (message) => {
+  if (message) showErrorToast(message);
+});
 
 function clearError(field: keyof typeof errors.value) {
   errors.value[field] = undefined;
@@ -288,12 +289,6 @@ function goToForgotPassword() {
 .field-error {
   margin: 6px 2px 0;
   font-size: 0.8rem;
-  color: var(--ion-color-danger);
-}
-
-.form-error {
-  margin: 0 0 10px;
-  font-size: 0.85rem;
   color: var(--ion-color-danger);
 }
 
