@@ -182,6 +182,7 @@ async function confirmSignOut(): Promise<void> {
   border-radius: 16px;
   padding: 18px;
   margin-bottom: 14px;
+  box-shadow: var(--hp-shadow-card);
 }
 
 .account {
@@ -198,10 +199,11 @@ async function confirmSignOut(): Promise<void> {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--ion-color-primary);
-  color: var(--ion-color-primary-contrast);
+  background: var(--hp-gold-gradient);
+  color: #0b0f19;
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 800;
+  box-shadow: var(--hp-gold-glow);
 }
 
 .account-info h1 {
@@ -243,7 +245,9 @@ async function confirmSignOut(): Promise<void> {
 
 .upgrade-btn {
   --border-radius: 12px;
-  --background: var(--ion-color-secondary);
+  --background: var(--hp-gold-gradient);
+  --color: #0b0f19;
+  font-weight: 700;
 }
 
 .usage-row {
