@@ -1,13 +1,18 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
 /**
- * Resolves the admin (server-only) key: prefers the new SUPABASE_SECRET_KEY,
- * falls back to the legacy SUPABASE_SERVICE_ROLE_KEY the platform still
- * auto-injects until the project finishes migrating. Both bypass RLS entirely
- * and must NEVER reach client bundles.
+ * Resolves the admin (server-only) key: prefers the new SUPABASE_SECRET_KEY
+ * (singular or plural platform injection), falls back to the legacy
+ * SUPABASE_SERVICE_ROLE_KEY the platform still auto-injects until the
+ * project finishes migrating. Both bypass RLS entirely and must NEVER
+ * reach client bundles.
  */
 export function adminKey(): string {
-  return Deno.env.get('SUPABASE_SECRET_KEY') ?? Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  for (const name of ['SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_SECRET_KEY']) {
+    const value = Deno.env.get(name);
+    if (value) return value.split(',')[0].trim();
+  }
+  return '';
 }
 
 /**
