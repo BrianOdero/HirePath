@@ -5,12 +5,12 @@
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="tab1" href="/tabs/tab1">
           <ion-icon aria-hidden="true" :icon="documentTextOutline" />
-          <ion-label>Practice</ion-label>
+          <ion-label>Studio</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="tab2" href="/tabs/tab2">
           <ion-icon aria-hidden="true" :icon="timeOutline" />
-          <ion-label>History</ion-label>
+          <ion-label>Readiness</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="tab3" href="/tabs/tab3">

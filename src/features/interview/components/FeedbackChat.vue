@@ -12,6 +12,7 @@
         class="bubble"
         :class="message.role"
       >
+        <span v-if="message.rating" class="rating-chip">{{ message.rating }}/10</span>
         <p>{{ message.content }}</p>
         <span class="bubble-time">{{ timeOf(message.createdAt) }}</span>
       </div>
@@ -124,6 +125,18 @@ function send() {
 .bubble p {
   margin: 0 0 4px;
   white-space: pre-wrap;
+}
+
+.rating-chip {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--hp-gold-600);
+  background: var(--hp-amber-bg);
+  border: 1px solid var(--hp-gold-border);
 }
 
 .bubble-time {

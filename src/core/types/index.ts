@@ -36,11 +36,22 @@ export interface InterviewQuestion {
 
 export type FeedbackRole = 'user' | 'coach';
 
+/** Per-answer competency breakdown emitted by the feedback function. */
+export interface CompetencyScores {
+  clarity: number;
+  structure: number;
+  depth: number;
+  communication: number;
+}
+
 export interface FeedbackMessage {
   id: string;
   role: FeedbackRole;
   content: string;
   createdAt: string;
+  /** Overall 1-10 score, present on coach critique messages (new sessions). */
+  rating?: number;
+  scores?: CompetencyScores;
 }
 
 export interface InterviewSession {

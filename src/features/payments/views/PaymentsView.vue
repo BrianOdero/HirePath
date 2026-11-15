@@ -5,7 +5,7 @@
         <ion-buttons slot="start">
           <ion-back-button default-href="/tabs/tab3" />
         </ion-buttons>
-        <ion-title>Payments</ion-title>
+        <ion-title>Payments & Billing</ion-title>
       </ion-toolbar>
     </ion-header>
 

@@ -34,6 +34,14 @@ const BodySchema = z.object({
 
 const FeedbackSchema = z.object({
   rating: z.number().min(1).max(10),
+  scores: z
+    .object({
+      clarity: z.number().min(1).max(10),
+      structure: z.number().min(1).max(10),
+      depth: z.number().min(1).max(10),
+      communication: z.number().min(1).max(10),
+    })
+    .optional(),
   critique: z.string().min(20),
   followUp: z.string().min(10),
 });
@@ -89,7 +97,7 @@ Deno.serve(async (req) => {
         {
           role: 'system',
           content:
-            'You are an expert interview coach. Critique the candidate answer against the given interview question. Be specific, honest, and encouraging. Respond ONLY with JSON: { "rating": number 1-10, "critique": string (2-4 sentences), "followUp": string (a short follow-up question) }.',
+            'You are an expert interview coach. Critique the candidate answer against the given interview question. Be specific, honest, and encouraging. Respond ONLY with JSON: { "rating": number 1-10, "scores": { "clarity": number 1-10, "structure": number 1-10 (answer organisation incl. STAR), "depth": number 1-10 (technical/domain depth), "communication": number 1-10 }, "critique": string (2-4 sentences), "followUp": string (a short follow-up question) }.',
         },
         {
           role: 'user',
@@ -103,13 +111,16 @@ Deno.serve(async (req) => {
     const fb = FeedbackSchema.parse(JSON.parse(raw));
 
     // ---- persist critique + follow-up coach messages (plain text,
-    // the chat UI renders content as-is)
+    // the chat UI renders content as-is). The critique carries the
+    // rating + competency scores for the Readiness dashboard.
     const { error: coachInsertError } = await supabase.from('session_messages').insert([
       {
         session_id: body.sessionId,
         question_id: body.questionId,
         role: 'coach',
         content: fb.critique,
+        rating: fb.rating,
+        scores: fb.scores ?? null,
       },
       {
         session_id: body.sessionId,
@@ -122,6 +133,7 @@ Deno.serve(async (req) => {
 
     return json({
       rating: fb.rating,
+      scores: fb.scores ?? null,
       critique: fb.critique,
       followUp: fb.followUp,
     });

@@ -28,6 +28,8 @@ interface MessageRow {
   role: 'user' | 'coach';
   content: string;
   created_at: string;
+  rating: number | null;
+  scores: Record<string, number> | null;
 }
 
 /**
@@ -71,6 +73,15 @@ function toMessage(row: MessageRow): FeedbackMessage {
     role: row.role,
     content: row.content,
     createdAt: row.created_at,
+    rating: row.rating ?? undefined,
+    scores: row.scores
+      ? {
+          clarity: row.scores.clarity,
+          structure: row.scores.structure,
+          depth: row.scores.depth,
+          communication: row.scores.communication,
+        }
+      : undefined,
   };
 }
 
@@ -124,8 +135,24 @@ export const supabaseInterviewApi: InterviewApi = {
       .from('interview_sessions')
       .select('*')
       .order('created_at', { ascending: false });
+    const rows = (data ?? []) as SessionRow[];
     if (error) throw new Error(error.message);
-    return ((data ?? []) as SessionRow[]).map((row) => toSession(row));
+    if (!rows.length) return [];
+    // One batched thread fetch powers both the Readiness dashboard
+    // (ratings/scores, answered counts) and the history list — no N+1.
+    const { data: messages, error: msgError } = await supabase
+      .from('session_messages')
+      .select('*')
+      .in('session_id', rows.map((row) => row.id))
+      .order('created_at', { ascending: true });
+    if (msgError) throw new Error(msgError.message);
+
+    const grouped: Record<string, Record<string, FeedbackMessage[]>> = {};
+    for (const row of (messages ?? []) as MessageRow[]) {
+      (grouped[row.session_id] ??= {})[row.question_id] ??= [];
+      grouped[row.session_id][row.question_id].push(toMessage(row));
+    }
+    return rows.map((row) => toSession(row, grouped[row.id] ?? {}));
   },
 
   async getSession(id): Promise<InterviewSession | null> {
