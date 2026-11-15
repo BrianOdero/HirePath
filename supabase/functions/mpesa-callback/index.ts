@@ -3,7 +3,7 @@
 // (or renews) Pro on success. Idempotent + quick HTTP 200 per the doc.
 
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { corsHeaders, json } from '../_shared/cors.ts';
+import { json } from '../_shared/cors.ts';
 import { adminKey } from '../_shared/admin.ts';
 import { activatePro } from '../_shared/subscription.ts';
 
